@@ -1,4 +1,4 @@
-# 🗺️ LỘ TRÌNH TRIỂN KHAI DỰ ÁN CAPSTONE AIRBNB (NESTJS)
+﻿# 🗺️ LỘ TRÌNH TRIỂN KHAI DỰ ÁN CAPSTONE AIRBNB (NESTJS)
 
 > **Dự án**: Capstone Backend Airbnb - Khóa NodeJS 56 (CyberSoft)  
 > **Repository**: [https://github.com/huynhgiahuy236/capstone-bnb.git](https://github.com/huynhgiahuy236/capstone-bnb.git)  
@@ -169,12 +169,14 @@
   - [x] Xác minh 100% npm run lint và npm run build.
   - [x] Merge vào develop và push lên GitHub.
 
-- [ ] **Giai đoạn 4: Location & Room Browsing, Filtering & Search (Frontend)**
-  - [ ] Tạo nhánh feature/frontend-rooms-and-locations.
-  - [ ] Đồng bộ danh sách vị trí nổi bật, tìm kiếm vị trí theo từ khóa.
-  - [ ] Danh sách phòng, phân trang, lọc theo vị trí (maViTri), ngày nhận/trả phòng, số lượng khách.
-  - [ ] Bộ lọc 10 tiện ích chuẩn: máy giặt, bàn là, tivi, điều hòa, wifi, bếp, đỗ xe, hồ bơi, bàn ủi.
-  - [ ] Chi tiết phòng /rooms/[id], thư viện ảnh, thông tin vị trí và tiện ích.
+- [x] **Giai đoạn 4: Location & Room Browsing, Filtering & Search (Frontend)** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-rooms-and-locations.
+  - [x] Đồng bộ danh sách vị trí nổi bật, tìm kiếm vị trí theo từ khóa.
+  - [x] Danh sách phòng, phân trang, lọc theo vị trí (maViTri), ngày nhận/trả phòng, số lượng khách.
+  - [x] Bộ lọc 10 tiện ích chuẩn: máy giặt, bàn là, tivi, điều hòa, wifi, bếp, đỗ xe, hồ bơi, bàn ủi.
+  - [x] Chi tiết phòng /rooms/[id], thư viện ảnh, thông tin vị trí và tiện ích.
+  - [x] Xác minh 100% npm run lint và npm run build.
+  - [x] Merge vào develop và push lên GitHub.
 
 - [ ] **Giai đoạn 5: Booking Flow, Availability Check & Comments (Frontend)**
   - [ ] Tạo nhánh feature/frontend-booking-and-comments.
