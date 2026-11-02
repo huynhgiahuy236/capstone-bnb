@@ -33,20 +33,18 @@ export class ResponseTransformInterceptor<T> implements NestInterceptor<
         let message = "Xử lý thành công";
         let content: any = result;
 
-        // Nếu service trả về object có custom message hoặc data/content riêng biệt
+        // Nếu service trả về object có custom message hoặc content riêng biệt
         if (
           result &&
           typeof result === "object" &&
           !Array.isArray(result) &&
-          ("message" in result || "content" in result || "data" in result)
+          ("message" in result || "content" in result)
         ) {
           if (result.message) {
             message = result.message;
           }
           if ("content" in result) {
             content = result.content;
-          } else if ("data" in result) {
-            content = result.data;
           }
         }
 

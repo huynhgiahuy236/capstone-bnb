@@ -108,10 +108,19 @@ const loadPageData = async ({
     }
 
     const roomsResponse = await getRooms(currentPage, PAGE_SIZE, keyword);
+    const rawData = roomsResponse?.content?.data ?? roomsResponse?.content;
+    const rooms = Array.isArray(rawData) ? rawData : [];
+    const totalRows =
+      typeof roomsResponse?.content?.totalRow === "number"
+        ? roomsResponse.content.totalRow
+        : rooms.length;
+
     return {
-      locations: locationsResponse.content,
-      rooms: roomsResponse.content.data,
-      totalRows: roomsResponse.content.totalRow,
+      locations: Array.isArray(locationsResponse?.content)
+        ? locationsResponse.content
+        : [],
+      rooms,
+      totalRows,
     };
   } catch {
     return null;

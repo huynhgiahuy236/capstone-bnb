@@ -74,19 +74,38 @@ const getHomeData = async () => {
       commentsResponse,
       locationsResponse,
     ] = await Promise.all([
-      getRooms(1, 8),
-      getAllRooms(),
+      getRooms(1, 8).catch(() => null),
+      getAllRooms().catch(() => null),
       getComments().catch(() => null),
-      getLocations(),
+      getLocations().catch(() => null),
     ]);
-    const topRated = commentsResponse
-      ? getTopRatedRooms(allRoomsResponse.content, commentsResponse.content)
+
+    const allRooms = Array.isArray(allRoomsResponse?.content)
+      ? allRoomsResponse.content
+      : [];
+    const allComments = Array.isArray(commentsResponse?.content)
+      ? commentsResponse.content
+      : [];
+    const locations = Array.isArray(locationsResponse?.content)
+      ? locationsResponse.content
+      : [];
+
+    const rawPaged = roomsResponse?.content;
+    const rooms: ApiRoom[] = Array.isArray(rawPaged?.data)
+      ? rawPaged.data
+      : Array.isArray(rawPaged)
+        ? rawPaged
+        : allRooms.slice(0, 8);
+
+    const topRated = allComments.length > 0
+      ? getTopRatedRooms(allRooms, allComments)
       : { ratings: {}, rooms: [] };
+
     return {
-      locations: locationsResponse.content,
-      rooms: roomsResponse.content.data,
-      topRatedRooms: topRated.rooms,
-      topRoomRatings: topRated.ratings,
+      locations,
+      rooms,
+      topRatedRooms: topRated.rooms ?? [],
+      topRoomRatings: topRated.ratings ?? {},
     };
   } catch {
     return {
@@ -103,7 +122,7 @@ export default async function Home() {
   const { locations, rooms, topRatedRooms, topRoomRatings } =
     await getHomeData();
   const locationMap = new Map(
-    locations.map((location) => [location.id, location]),
+    (locations || []).map((location) => [location.id, location]),
   );
 
   return (
@@ -186,7 +205,7 @@ export default async function Home() {
                 </h2>
               </div>
             </div>
-            {rooms.length > 0 ? (
+            {rooms && rooms.length > 0 ? (
               <div className="grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
                 {rooms.map((room) => (
                   <RoomCard

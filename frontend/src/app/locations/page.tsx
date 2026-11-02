@@ -40,8 +40,12 @@ export default async function LocationsPage({
       pageSize: PAGE_SIZE,
     });
 
-    locations = response.content.data;
-    totalRow = response.content.totalRow;
+    const rawData = response?.content?.data ?? response?.content;
+    locations = Array.isArray(rawData) ? rawData : [];
+    totalRow =
+      typeof response?.content?.totalRow === "number"
+        ? response.content.totalRow
+        : locations.length;
 
     // Fallback: Khi tìm kiếm có từ khóa nhưng API không khớp (do từ khóa gõ không dấu, vd: "hon rua")
     if (locations.length === 0 && keyword) {
