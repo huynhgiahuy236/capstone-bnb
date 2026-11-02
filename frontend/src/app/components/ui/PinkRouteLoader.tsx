@@ -1,0 +1,59 @@
+"use client";
+
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const PinkRouteLoader = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Khi pathname hoặc searchParams thay đổi -> cuộn lên đầu trang và kết thúc loading
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    const frameId = window.requestAnimationFrame(() => setLoading(false));
+    return () => window.cancelAnimationFrame(frameId);
+  }, [pathname, searchParams]);
+
+  useEffect(() => {
+    const handleLinkClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const anchor = target?.closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (
+        href &&
+        href.startsWith("/") &&
+        !href.startsWith("#") &&
+        anchor.target !== "_blank"
+      ) {
+        const currentUrl = `${window.location.pathname}${window.location.search}`;
+        if (href !== currentUrl) {
+          setLoading(true);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleLinkClick);
+    return () => document.removeEventListener("click", handleLinkClick);
+  }, []);
+
+  if (!loading) return null;
+
+  return (
+    <div
+      aria-busy="true"
+      aria-label="Đang chuyển trang"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[9999] flex flex-col items-center"
+      role="status"
+    >
+      {/* Top progress bar màu hồng */}
+      <div className="h-1 w-full overflow-hidden bg-rose-100">
+        <div className="h-full w-full origin-left animate-[pulse_1s_infinite] bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 shadow-[0_0_10px_#f43f5e]" />
+      </div>
+    </div>
+  );
+};
+
+export default PinkRouteLoader;
