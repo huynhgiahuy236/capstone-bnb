@@ -1,13 +1,13 @@
 services:
-  app:
-    container_name: capstone_airbnb_app
+  backend:
+    container_name: capstone_airbnb_backend
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - '3000:3000'
     env_file:
-      - .env
+      - ./backend/.env
     environment:
       - DATABASE_URL=mysql://root:12345@mysql_db:3306/capstone_airbnb
     depends_on:
@@ -25,7 +25,7 @@ services:
       MYSQL_DATABASE: capstone_airbnb
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./prisma/airbnb_database.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/prisma/airbnb_database.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p12345"]
       interval: 5s
