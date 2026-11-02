@@ -2,6 +2,7 @@ import { Injectable, Logger, BadRequestException } from "@nestjs/common";
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import * as fs from "fs";
 import * as path from "path";
+import "multer";
 
 @Injectable()
 export class UploadService {
@@ -40,9 +41,10 @@ export class UploadService {
           (resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
               { folder: `capstone_airbnb/${folder}` },
-              (error, result) => {
+              (error, uploadResult) => {
                 if (error) return reject(error);
-                resolve(result!);
+                if (uploadResult) return resolve(uploadResult);
+                reject(new Error("Cloudinary upload result is undefined"));
               },
             );
             stream.end(file.buffer);
@@ -50,9 +52,10 @@ export class UploadService {
         );
 
         return result.secure_url;
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
         this.logger.warn(
-          `Cloudinary upload failed: ${err.message}. Fallback sang Local Storage.`,
+          `Cloudinary upload failed: ${errorMsg}. Fallback sang Local Storage.`,
         );
       }
     }
