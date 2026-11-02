@@ -116,22 +116,22 @@
     - [x] `POST /api/phong-thue/upload-hinh-phong`: Upload hình ảnh phòng (Cloudinary & Local).
   - [x] Commit, push và **chờ duyệt**.
 
-- [ ] **Giai đoạn 5: Module DatPhong & BinhLuan (11 API)**
-  - [ ] Tạo nhánh `feature/dat-phong-and-binh-luan-module`.
-  - [ ] **Module DatPhong (6 API)**:
-    - [ ] `GET /api/dat-phong`: Lấy toàn bộ danh sách đặt phòng.
-    - [ ] `POST /api/dat-phong`: Tạo lượt đặt phòng.
-    - [ ] `GET /api/dat-phong/{id}`: Xem chi tiết 1 đơn đặt phòng.
-    - [ ] `PUT /api/dat-phong/{id}`: Cập nhật thông tin đặt phòng.
-    - [ ] `DELETE /api/dat-phong/{id}`: Hủy đơn đặt phòng.
-    - [ ] `GET /api/dat-phong/lay-theo-nguoi-dung/{MaNguoiDung}`: Lịch sử đặt phòng của người dùng.
-  - [ ] **Module BinhLuan (5 API)**:
-    - [ ] `GET /api/binh-luan`: Lấy tất cả bình luận.
-    - [ ] `POST /api/binh-luan`: Gửi bình luận và đánh giá sao (1 - 5).
-    - [ ] `PUT /api/binh-luan/{id}`: Sửa bình luận.
-    - [ ] `DELETE /api/binh-luan/{id}`: Xóa bình luận.
-    - [ ] `GET /api/binh-luan/lay-binh-luan-theo-phong/{MaPhong}`: Lấy danh sách bình luận theo phòng.
-  - [ ] Commit, push và **chờ duyệt**.
+- [x] **Giai đoạn 5: Module DatPhong & BinhLuan (11 API)** (Hoàn thành)
+  - [x] Tạo nhánh `feature/dat-phong-and-binh-luan-module`.
+  - [x] **Module DatPhong (6 API)**:
+    - [x] `GET /api/dat-phong`: Lấy toàn bộ danh sách đặt phòng.
+    - [x] `POST /api/dat-phong`: Tạo lượt đặt phòng mới (kiểm tra ngày đến, ngày đi hợp lệ).
+    - [x] `GET /api/dat-phong/{id}`: Xem chi tiết 1 đơn đặt phòng.
+    - [x] `PUT /api/dat-phong/{id}`: Cập nhật thông tin đặt phòng.
+    - [x] `DELETE /api/dat-phong/{id}`: Hủy đơn đặt phòng.
+    - [x] `GET /api/dat-phong/lay-theo-nguoi-dung/{MaNguoiDung}`: Lịch sử đặt phòng của người dùng.
+  - [x] **Module BinhLuan (5 API)**:
+    - [x] `GET /api/binh-luan`: Lấy tất cả bình luận.
+    - [x] `POST /api/binh-luan`: Gửi bình luận và đánh giá sao (1 - 5) (Yêu cầu đăng nhập).
+    - [x] `PUT /api/binh-luan/{id}`: Sửa bình luận (Yêu cầu đăng nhập).
+    - [x] `DELETE /api/binh-luan/{id}`: Xóa bình luận (Yêu cầu đăng nhập).
+    - [x] `GET /api/binh-luan/lay-binh-luan-theo-phong/{MaPhong}`: Lấy danh sách bình luận theo phòng.
+  - [x] Commit, push và **chờ duyệt**.
 
 - [ ] **Giai đoạn 6: Docker hóa, Clean Code & Bàn giao nộp bài**
   - [ ] Tạo nhánh `feature/docker-and-docs`.

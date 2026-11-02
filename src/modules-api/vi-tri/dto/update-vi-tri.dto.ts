@@ -22,3 +22,4 @@ export class UpdateViTriDto {
   @IsString()
   hinhAnh?: string;
 }
+

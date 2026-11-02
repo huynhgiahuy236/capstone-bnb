@@ -130,3 +130,4 @@ export class ViTriController {
     return this.viTriService.uploadHinhViTri(maViTri, file);
   }
 }
+

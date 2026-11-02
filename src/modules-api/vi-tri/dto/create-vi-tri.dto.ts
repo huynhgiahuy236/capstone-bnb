@@ -22,3 +22,4 @@ export class CreateViTriDto {
   @IsString()
   hinhAnh?: string;
 }
+
