@@ -28,12 +28,9 @@ import { CommentModule } from "./modules-api/comment/comment.module";
     JwtModule.registerAsync({
       global: true,
       useFactory: () => {
-        const secret = process.env.JWT_SECRET;
-        if (!secret) {
-          throw new Error(
-            "FATAL: Biến môi trường JWT_SECRET chưa được thiết lập trong .env!",
-          );
-        }
+        const secret =
+          process.env.JWT_SECRET ||
+          "CYBERSOFT_AIRBNB_DEFAULT_SECRET_KEY_2026_!@#$%^";
         return {
           secret,
           signOptions: {

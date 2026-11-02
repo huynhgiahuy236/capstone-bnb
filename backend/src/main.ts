@@ -8,6 +8,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import cookieParser from "cookie-parser";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
+import * as fs from "fs";
 
 export async function configureApp(app: NestExpressApplication) {
   // Parse Cookie
@@ -19,10 +20,13 @@ export async function configureApp(app: NestExpressApplication) {
     credentials: true,
   });
 
-  // Serve static files (public/images)
-  app.useStaticAssets(join(process.cwd(), "public"), {
-    prefix: "/public/",
-  });
+  // Serve static files (public/images) if directory exists
+  const publicPath = join(process.cwd(), "public");
+  if (fs.existsSync(publicPath)) {
+    app.useStaticAssets(publicPath, {
+      prefix: "/public/",
+    });
+  }
 
   // Global Prefix
   app.setGlobalPrefix("api");
