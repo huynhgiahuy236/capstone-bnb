@@ -17,15 +17,15 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from '@nestjs/swagger';
-import { BinhLuanService } from './binh-luan.service';
-import { CreateBinhLuanDto } from './dto/create-binh-luan.dto';
-import { UpdateBinhLuanDto } from './dto/update-binh-luan.dto';
+import { CommentService } from './comment.service';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('BinhLuan')
 @Controller('binh-luan')
-export class BinhLuanController {
-  constructor(private readonly binhLuanService: BinhLuanService) {}
+export class CommentController {
+  constructor(private readonly commentService: CommentService) {}
 
   @Public()
   @Get()
@@ -33,7 +33,7 @@ export class BinhLuanController {
   @ApiResponse({ status: 200, description: 'Lấy toàn bộ danh sách bình luận thành công' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findAll() {
-    return this.binhLuanService.findAll();
+    return this.commentService.findAll();
   }
 
   @Public()
@@ -44,8 +44,8 @@ export class BinhLuanController {
   @ApiResponse({ status: 400, description: 'Mã phòng không hợp lệ (phải là số nguyên)' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy phòng thuê có ID tương ứng trên hệ thống' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  findByPhong(@Param('MaPhong', ParseIntPipe) maPhong: number) {
-    return this.binhLuanService.findByPhong(maPhong);
+  findByRoom(@Param('MaPhong', ParseIntPipe) maPhong: number) {
+    return this.commentService.findByRoom(maPhong);
   }
 
   @Public()
@@ -57,7 +57,7 @@ export class BinhLuanController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy bình luận có ID tương ứng hoặc đã bị xóa' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.binhLuanService.findOne(id);
+    return this.commentService.findOne(id);
   }
 
   @Post()
@@ -72,8 +72,8 @@ export class BinhLuanController {
   @ApiResponse({ status: 401, description: 'Chưa đăng nhập hoặc mã token không hợp lệ' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy phòng thuê hoặc người dùng trên hệ thống' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  create(@Body() createBinhLuanDto: CreateBinhLuanDto) {
-    return this.binhLuanService.create(createBinhLuanDto);
+  create(@Body() createCommentDto: CreateCommentDto) {
+    return this.commentService.create(createCommentDto);
   }
 
   @Put(':id')
@@ -87,9 +87,9 @@ export class BinhLuanController {
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateBinhLuanDto: UpdateBinhLuanDto,
+    @Body() updateCommentDto: UpdateCommentDto,
   ) {
-    return this.binhLuanService.update(id, updateBinhLuanDto);
+    return this.commentService.update(id, updateCommentDto);
   }
 
   @Delete(':id')
@@ -102,6 +102,6 @@ export class BinhLuanController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy bình luận có ID tương ứng để xóa' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.binhLuanService.remove(id);
+    return this.commentService.remove(id);
   }
 }

@@ -16,15 +16,15 @@ import {
   ApiResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { DatPhongService } from './dat-phong.service';
-import { CreateDatPhongDto } from './dto/create-dat-phong.dto';
-import { UpdateDatPhongDto } from './dto/update-dat-phong.dto';
+import { BookingService } from './booking.service';
+import { CreateBookingDto } from './dto/create-booking.dto';
+import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('DatPhong')
 @Controller('dat-phong')
-export class DatPhongController {
-  constructor(private readonly datPhongService: DatPhongService) {}
+export class BookingController {
+  constructor(private readonly bookingService: BookingService) {}
 
   @Public()
   @Get()
@@ -32,7 +32,7 @@ export class DatPhongController {
   @ApiResponse({ status: 200, description: 'Lấy toàn bộ danh sách đặt phòng thành công' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findAll() {
-    return this.datPhongService.findAll();
+    return this.bookingService.findAll();
   }
 
   @Public()
@@ -44,7 +44,7 @@ export class DatPhongController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy người dùng có ID tương ứng trên hệ thống' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findByUser(@Param('MaNguoiDung', ParseIntPipe) maNguoiDung: number) {
-    return this.datPhongService.findByUser(maNguoiDung);
+    return this.bookingService.findByUser(maNguoiDung);
   }
 
   @Public()
@@ -56,7 +56,7 @@ export class DatPhongController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy đơn đặt phòng có ID tương ứng hoặc đã bị hủy' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.datPhongService.findOne(id);
+    return this.bookingService.findOne(id);
   }
 
   @Public()
@@ -67,8 +67,8 @@ export class DatPhongController {
   @ApiResponse({ status: 400, description: 'Dữ liệu đặt phòng không hợp lệ hoặc ngày đi (check-out) trước ngày đến' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy phòng thuê hoặc người dùng liên kết trên hệ thống' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  create(@Body() createDatPhongDto: CreateDatPhongDto) {
-    return this.datPhongService.create(createDatPhongDto);
+  create(@Body() createBookingDto: CreateBookingDto) {
+    return this.bookingService.create(createBookingDto);
   }
 
   @Public()
@@ -81,9 +81,9 @@ export class DatPhongController {
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateDatPhongDto: UpdateDatPhongDto,
+    @Body() updateBookingDto: UpdateBookingDto,
   ) {
-    return this.datPhongService.update(id, updateDatPhongDto);
+    return this.bookingService.update(id, updateBookingDto);
   }
 
   @Public()
@@ -95,6 +95,6 @@ export class DatPhongController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy đơn đặt phòng có ID tương ứng để hủy' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.datPhongService.remove(id);
+    return this.bookingService.remove(id);
   }
 }

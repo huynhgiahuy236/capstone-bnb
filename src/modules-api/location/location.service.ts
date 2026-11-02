@@ -4,13 +4,13 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreateViTriDto } from './dto/create-vi-tri.dto';
-import { UpdateViTriDto } from './dto/update-vi-tri.dto';
-import { PaginationViTriDto } from './dto/pagination-vi-tri.dto';
+import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
+import { PaginationLocationDto } from './dto/pagination-location.dto';
 import { UploadService } from 'src/common/services/upload.service';
 
 @Injectable()
-export class ViTriService {
+export class LocationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadService: UploadService,
@@ -19,7 +19,7 @@ export class ViTriService {
   /**
    * Chuyển đổi dữ liệu từ DB (snake_case) sang Swagger format (camelCase)
    */
-  private formatViTri(item: any) {
+  private formatLocation(item: any) {
     if (!item) return null;
     return {
       id: item.id,
@@ -40,14 +40,14 @@ export class ViTriService {
       where: { isDeleted: false },
       orderBy: { id: 'desc' },
     });
-    return list.map((item) => this.formatViTri(item));
+    return list.map((item) => this.formatLocation(item));
   }
 
   /**
    * 2. Thêm vị trí mới
    */
-  async create(dto: CreateViTriDto) {
-    const newViTri = await this.prisma.viTri.create({
+  async create(dto: CreateLocationDto) {
+    const newLocation = await this.prisma.viTri.create({
       data: {
         ten_vi_tri: dto.tenViTri,
         tinh_thanh: dto.tinhThanh,
@@ -58,7 +58,7 @@ export class ViTriService {
 
     return {
       message: 'Thêm vị trí mới thành công!',
-      content: this.formatViTri(newViTri),
+      content: this.formatLocation(newLocation),
     };
   }
 
@@ -66,21 +66,21 @@ export class ViTriService {
    * 3. Lấy thông tin chi tiết một vị trí theo ID
    */
   async findOne(id: number) {
-    const viTri = await this.prisma.viTri.findFirst({
+    const location = await this.prisma.viTri.findFirst({
       where: { id, isDeleted: false },
     });
 
-    if (!viTri) {
-      throw new NotFoundException(`Không tìm thấy vị trí có ID: ${id}`);
+    if (!location) {
+      throw new NotFoundException(`Không tìm thấy vị trí có ID: ${id} hoặc vị trí đã bị xóa!`);
     }
 
-    return this.formatViTri(viTri);
+    return this.formatLocation(location);
   }
 
   /**
    * 4. Cập nhật vị trí
    */
-  async update(id: number, dto: UpdateViTriDto) {
+  async update(id: number, dto: UpdateLocationDto) {
     await this.findOne(id);
 
     const updated = await this.prisma.viTri.update({
@@ -95,7 +95,7 @@ export class ViTriService {
 
     return {
       message: 'Cập nhật vị trí thành công!',
-      content: this.formatViTri(updated),
+      content: this.formatLocation(updated),
     };
   }
 
@@ -122,7 +122,7 @@ export class ViTriService {
   /**
    * 6. Phân trang tìm kiếm vị trí
    */
-  async paginationSearch(query: PaginationViTriDto) {
+  async paginationSearch(query: PaginationLocationDto) {
     const pageIndex = Number(query.pageIndex) || 1;
     const pageSize = Number(query.pageSize) || 10;
     const keyword = query.keyword ? String(query.keyword).trim() : '';
@@ -155,14 +155,14 @@ export class ViTriService {
       pageSize,
       totalRow,
       keywords: keyword,
-      data: data.map((item) => this.formatViTri(item)),
+      data: data.map((item) => this.formatLocation(item)),
     };
   }
 
   /**
    * 7. Upload hình ảnh cho vị trí
    */
-  async uploadHinhViTri(maViTri: number, file: Express.Multer.File) {
+  async uploadLocationImage(maViTri: number, file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('Vui lòng chọn file hình ảnh!');
     }
@@ -178,8 +178,7 @@ export class ViTriService {
 
     return {
       message: 'Upload hình ảnh vị trí thành công!',
-      content: this.formatViTri(updated),
+      content: this.formatLocation(updated),
     };
   }
 }
-

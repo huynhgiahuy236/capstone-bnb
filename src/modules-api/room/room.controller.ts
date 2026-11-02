@@ -24,17 +24,17 @@ import {
   ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
-import { PhongService } from './phong.service';
-import { CreatePhongDto } from './dto/create-phong.dto';
-import { UpdatePhongDto } from './dto/update-phong.dto';
-import { PaginationPhongDto } from './dto/pagination-phong.dto';
+import { RoomService } from './room.service';
+import { CreateRoomDto } from './dto/create-room.dto';
+import { UpdateRoomDto } from './dto/update-room.dto';
+import { PaginationRoomDto } from './dto/pagination-room.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 
 @ApiTags('Phong')
 @Controller('phong-thue')
-export class PhongController {
-  constructor(private readonly phongService: PhongService) {}
+export class RoomController {
+  constructor(private readonly roomService: RoomService) {}
 
   @Public()
   @Get()
@@ -42,7 +42,7 @@ export class PhongController {
   @ApiResponse({ status: 200, description: 'Lấy toàn bộ danh sách phòng thuê thành công' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findAll() {
-    return this.phongService.findAll();
+    return this.roomService.findAll();
   }
 
   @Public()
@@ -53,8 +53,8 @@ export class PhongController {
   @ApiResponse({ status: 400, description: 'Mã vị trí không hợp lệ' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có mã tương ứng trên hệ thống' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  findByViTri(@Query('maViTri', ParseIntPipe) maViTri: number) {
-    return this.phongService.findByViTri(maViTri);
+  findByLocation(@Query('maViTri', ParseIntPipe) maViTri: number) {
+    return this.roomService.findByLocation(maViTri);
   }
 
   @Public()
@@ -66,8 +66,8 @@ export class PhongController {
   @ApiResponse({ status: 200, description: 'Phân trang tìm kiếm phòng thuê thành công' })
   @ApiResponse({ status: 400, description: 'Tham số phân trang không hợp lệ' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  paginationSearch(@Query() query: PaginationPhongDto) {
-    return this.phongService.paginationSearch(query);
+  paginationSearch(@Query() query: PaginationRoomDto) {
+    return this.roomService.paginationSearch(query);
   }
 
   @Public()
@@ -79,7 +79,7 @@ export class PhongController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy phòng thuê có ID tương ứng hoặc đã bị xóa' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.phongService.findOne(id);
+    return this.roomService.findOne(id);
   }
 
   @Post()
@@ -93,8 +93,8 @@ export class PhongController {
   @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu vai trò ADMIN)' })
   @ApiResponse({ status: 404, description: 'Mã vị trí liên kết không tồn tại trên hệ thống' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  create(@Body() createPhongDto: CreatePhongDto) {
-    return this.phongService.create(createPhongDto);
+  create(@Body() createRoomDto: CreateRoomDto) {
+    return this.roomService.create(createRoomDto);
   }
 
   @Put(':id')
@@ -110,9 +110,9 @@ export class PhongController {
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatePhongDto: UpdatePhongDto,
+    @Body() updateRoomDto: UpdateRoomDto,
   ) {
-    return this.phongService.update(id, updatePhongDto);
+    return this.roomService.update(id, updateRoomDto);
   }
 
   @Delete(':id')
@@ -127,7 +127,7 @@ export class PhongController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy phòng thuê có ID tương ứng để xóa' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.phongService.remove(id);
+    return this.roomService.remove(id);
   }
 
   @Post('upload-hinh-phong')
@@ -161,6 +161,6 @@ export class PhongController {
     @Query('maPhong', ParseIntPipe) maPhong: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.phongService.uploadHinhPhong(maPhong, file);
+    return this.roomService.uploadRoomImage(maPhong, file);
   }
 }

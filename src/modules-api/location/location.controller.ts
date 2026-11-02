@@ -24,17 +24,17 @@ import {
   ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
-import { ViTriService } from './vi-tri.service';
-import { CreateViTriDto } from './dto/create-vi-tri.dto';
-import { UpdateViTriDto } from './dto/update-vi-tri.dto';
-import { PaginationViTriDto } from './dto/pagination-vi-tri.dto';
+import { LocationService } from './location.service';
+import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
+import { PaginationLocationDto } from './dto/pagination-location.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 
 @ApiTags('ViTri')
 @Controller('vi-tri')
-export class ViTriController {
-  constructor(private readonly viTriService: ViTriService) {}
+export class LocationController {
+  constructor(private readonly locationService: LocationService) {}
 
   @Public()
   @Get()
@@ -42,7 +42,7 @@ export class ViTriController {
   @ApiResponse({ status: 200, description: 'Lấy toàn bộ danh sách vị trí thành công' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findAll() {
-    return this.viTriService.findAll();
+    return this.locationService.findAll();
   }
 
   @Public()
@@ -54,8 +54,8 @@ export class ViTriController {
   @ApiResponse({ status: 200, description: 'Phân trang tìm kiếm vị trí thành công' })
   @ApiResponse({ status: 400, description: 'Tham số phân trang không hợp lệ' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  paginationSearch(@Query() query: PaginationViTriDto) {
-    return this.viTriService.paginationSearch(query);
+  paginationSearch(@Query() query: PaginationLocationDto) {
+    return this.locationService.paginationSearch(query);
   }
 
   @Public()
@@ -67,7 +67,7 @@ export class ViTriController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có ID tương ứng hoặc đã bị xóa' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.viTriService.findOne(id);
+    return this.locationService.findOne(id);
   }
 
   @Post()
@@ -80,8 +80,8 @@ export class ViTriController {
   @ApiResponse({ status: 401, description: 'Chưa đăng nhập hoặc mã token không hợp lệ' })
   @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu vai trò ADMIN)' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
-  create(@Body() createViTriDto: CreateViTriDto) {
-    return this.viTriService.create(createViTriDto);
+  create(@Body() createLocationDto: CreateLocationDto) {
+    return this.locationService.create(createLocationDto);
   }
 
   @Put(':id')
@@ -97,9 +97,9 @@ export class ViTriController {
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateViTriDto: UpdateViTriDto,
+    @Body() updateLocationDto: UpdateLocationDto,
   ) {
-    return this.viTriService.update(id, updateViTriDto);
+    return this.locationService.update(id, updateLocationDto);
   }
 
   @Delete(':id')
@@ -114,7 +114,7 @@ export class ViTriController {
   @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có ID tương ứng để xóa' })
   @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.viTriService.remove(id);
+    return this.locationService.remove(id);
   }
 
   @Post('upload-hinh-vitri')
@@ -148,6 +148,6 @@ export class ViTriController {
     @Query('maViTri', ParseIntPipe) maViTri: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.viTriService.uploadHinhViTri(maViTri, file);
+    return this.locationService.uploadLocationImage(maViTri, file);
   }
 }

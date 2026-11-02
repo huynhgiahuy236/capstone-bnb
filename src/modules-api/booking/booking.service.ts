@@ -4,17 +4,17 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreateDatPhongDto } from './dto/create-dat-phong.dto';
-import { UpdateDatPhongDto } from './dto/update-dat-phong.dto';
+import { CreateBookingDto } from './dto/create-booking.dto';
+import { UpdateBookingDto } from './dto/update-booking.dto';
 
 @Injectable()
-export class DatPhongService {
+export class BookingService {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
    * Định dạng dữ liệu đặt phòng theo chuẩn Swagger (camelCase)
    */
-  private formatDatPhong(item: any) {
+  private formatBooking(item: any) {
     if (!item) return null;
     return {
       id: item.id,
@@ -55,13 +55,13 @@ export class DatPhongService {
       },
       orderBy: { id: 'desc' },
     });
-    return list.map((item) => this.formatDatPhong(item));
+    return list.map((item) => this.formatBooking(item));
   }
 
   /**
    * 2. Đặt phòng mới
    */
-  async create(dto: CreateDatPhongDto) {
+  async create(dto: CreateBookingDto) {
     // 1. Kiểm tra phòng tồn tại
     const phong = await this.prisma.phong.findFirst({
       where: { id: dto.maPhong, isDeleted: false },
@@ -101,7 +101,7 @@ export class DatPhongService {
 
     return {
       message: 'Đặt phòng thành công!',
-      content: this.formatDatPhong(newBooking),
+      content: this.formatBooking(newBooking),
     };
   }
 
@@ -121,13 +121,13 @@ export class DatPhongService {
       throw new NotFoundException(`Không tìm thấy đơn đặt phòng có ID: ${id} hoặc đơn đã bị hủy!`);
     }
 
-    return this.formatDatPhong(booking);
+    return this.formatBooking(booking);
   }
 
   /**
    * 4. Cập nhật thông tin đặt phòng
    */
-  async update(id: number, dto: UpdateDatPhongDto) {
+  async update(id: number, dto: UpdateBookingDto) {
     await this.findOne(id);
 
     if (dto.maPhong) {
@@ -171,7 +171,7 @@ export class DatPhongService {
 
     return {
       message: 'Cập nhật đơn đặt phòng thành công!',
-      content: this.formatDatPhong(updated),
+      content: this.formatBooking(updated),
     };
   }
 
@@ -218,6 +218,6 @@ export class DatPhongService {
       orderBy: { id: 'desc' },
     });
 
-    return list.map((item) => this.formatDatPhong(item));
+    return list.map((item) => this.formatBooking(item));
   }
 }

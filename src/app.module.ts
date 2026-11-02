@@ -10,10 +10,10 @@ import { PrismaModule } from './modules-system/prisma/prisma.module';
 import { CommonServicesModule } from './common/services/common-services.module';
 import { AuthModule } from './modules-api/auth/auth.module';
 import { UsersModule } from './modules-api/users/users.module';
-import { ViTriModule } from './modules-api/vi-tri/vi-tri.module';
-import { PhongModule } from './modules-api/phong/phong.module';
-import { DatPhongModule } from './modules-api/dat-phong/dat-phong.module';
-import { BinhLuanModule } from './modules-api/binh-luan/binh-luan.module';
+import { LocationModule } from './modules-api/location/location.module';
+import { RoomModule } from './modules-api/room/room.module';
+import { BookingModule } from './modules-api/booking/booking.module';
+import { CommentModule } from './modules-api/comment/comment.module';
 
 @Module({
   imports: [
@@ -21,10 +21,10 @@ import { BinhLuanModule } from './modules-api/binh-luan/binh-luan.module';
     CommonServicesModule,
     AuthModule,
     UsersModule,
-    ViTriModule,
-    PhongModule,
-    DatPhongModule,
-    BinhLuanModule,
+    LocationModule,
+    RoomModule,
+    BookingModule,
+    CommentModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'CYBERSOFT_AIRBNB_SECRET_KEY_2026_!@#$%^',

@@ -3,17 +3,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreateBinhLuanDto } from './dto/create-binh-luan.dto';
-import { UpdateBinhLuanDto } from './dto/update-binh-luan.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Injectable()
-export class BinhLuanService {
+export class CommentService {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
    * Định dạng dữ liệu bình luận theo chuẩn Swagger (camelCase)
    */
-  private formatBinhLuan(item: any) {
+  private formatComment(item: any) {
     if (!item) return null;
     return {
       id: item.id,
@@ -52,13 +52,13 @@ export class BinhLuanService {
       },
       orderBy: { id: 'desc' },
     });
-    return list.map((item) => this.formatBinhLuan(item));
+    return list.map((item) => this.formatComment(item));
   }
 
   /**
    * 2. Thêm bình luận mới
    */
-  async create(dto: CreateBinhLuanDto) {
+  async create(dto: CreateCommentDto) {
     // 1. Kiểm tra phòng tồn tại
     const phong = await this.prisma.phong.findFirst({
       where: { id: dto.maPhong, isDeleted: false },
@@ -91,7 +91,7 @@ export class BinhLuanService {
 
     return {
       message: 'Thêm bình luận thành công!',
-      content: this.formatBinhLuan(newComment),
+      content: this.formatComment(newComment),
     };
   }
 
@@ -111,13 +111,13 @@ export class BinhLuanService {
       throw new NotFoundException(`Không tìm thấy bình luận có ID: ${id} hoặc bình luận đã bị xóa!`);
     }
 
-    return this.formatBinhLuan(comment);
+    return this.formatComment(comment);
   }
 
   /**
    * 4. Cập nhật bình luận
    */
-  async update(id: number, dto: UpdateBinhLuanDto) {
+  async update(id: number, dto: UpdateCommentDto) {
     await this.findOne(id);
 
     const updated = await this.prisma.binhLuan.update({
@@ -134,7 +134,7 @@ export class BinhLuanService {
 
     return {
       message: 'Cập nhật bình luận thành công!',
-      content: this.formatBinhLuan(updated),
+      content: this.formatComment(updated),
     };
   }
 
@@ -161,7 +161,7 @@ export class BinhLuanService {
   /**
    * 6. Lấy danh sách bình luận theo phòng
    */
-  async findByPhong(maPhong: number) {
+  async findByRoom(maPhong: number) {
     const phong = await this.prisma.phong.findFirst({
       where: { id: maPhong, isDeleted: false },
     });
@@ -181,6 +181,6 @@ export class BinhLuanService {
       orderBy: { id: 'desc' },
     });
 
-    return list.map((item) => this.formatBinhLuan(item));
+    return list.map((item) => this.formatComment(item));
   }
 }

@@ -4,13 +4,13 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreatePhongDto } from './dto/create-phong.dto';
-import { UpdatePhongDto } from './dto/update-phong.dto';
-import { PaginationPhongDto } from './dto/pagination-phong.dto';
+import { CreateRoomDto } from './dto/create-room.dto';
+import { UpdateRoomDto } from './dto/update-room.dto';
+import { PaginationRoomDto } from './dto/pagination-room.dto';
 import { UploadService } from 'src/common/services/upload.service';
 
 @Injectable()
-export class PhongService {
+export class RoomService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadService: UploadService,
@@ -19,7 +19,7 @@ export class PhongService {
   /**
    * Chuyển đổi dữ liệu phòng từ snake_case DB sang camelCase theo đúng Swagger
    */
-  private formatPhong(item: any) {
+  private formatRoom(item: any) {
     if (!item) return null;
     return {
       id: item.id,
@@ -63,13 +63,13 @@ export class PhongService {
       include: { ViTri: true },
       orderBy: { id: 'desc' },
     });
-    return list.map((item) => this.formatPhong(item));
+    return list.map((item) => this.formatRoom(item));
   }
 
   /**
    * 2. Thêm phòng mới
    */
-  async create(dto: CreatePhongDto) {
+  async create(dto: CreateRoomDto) {
     if (dto.maViTri) {
       const viTri = await this.prisma.viTri.findFirst({
         where: { id: dto.maViTri, isDeleted: false },
@@ -105,7 +105,7 @@ export class PhongService {
 
     return {
       message: 'Thêm phòng mới thành công!',
-      content: this.formatPhong(newPhong),
+      content: this.formatRoom(newPhong),
     };
   }
 
@@ -122,13 +122,13 @@ export class PhongService {
       throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${id} hoặc phòng đã bị xóa!`);
     }
 
-    return this.formatPhong(phong);
+    return this.formatRoom(phong);
   }
 
   /**
    * 4. Lấy danh sách phòng theo mã vị trí
    */
-  async findByViTri(maViTri: number) {
+  async findByLocation(maViTri: number) {
     const viTri = await this.prisma.viTri.findFirst({
       where: { id: maViTri, isDeleted: false },
     });
@@ -145,13 +145,13 @@ export class PhongService {
       orderBy: { id: 'desc' },
     });
 
-    return list.map((item) => this.formatPhong(item));
+    return list.map((item) => this.formatRoom(item));
   }
 
   /**
    * 5. Cập nhật thông tin phòng
    */
-  async update(id: number, dto: UpdatePhongDto) {
+  async update(id: number, dto: UpdateRoomDto) {
     await this.findOne(id);
 
     if (dto.maViTri) {
@@ -190,7 +190,7 @@ export class PhongService {
 
     return {
       message: 'Cập nhật thông tin phòng thành công!',
-      content: this.formatPhong(updated),
+      content: this.formatRoom(updated),
     };
   }
 
@@ -217,7 +217,7 @@ export class PhongService {
   /**
    * 7. Phân trang tìm kiếm phòng
    */
-  async paginationSearch(query: PaginationPhongDto) {
+  async paginationSearch(query: PaginationRoomDto) {
     const pageIndex = Number(query.pageIndex) || 1;
     const pageSize = Number(query.pageSize) || 10;
     const keyword = query.keyword ? String(query.keyword).trim() : '';
@@ -250,14 +250,14 @@ export class PhongService {
       pageSize,
       totalRow,
       keywords: keyword,
-      data: data.map((item) => this.formatPhong(item)),
+      data: data.map((item) => this.formatRoom(item)),
     };
   }
 
   /**
    * 8. Upload hình ảnh cho phòng
    */
-  async uploadHinhPhong(maPhong: number, file: Express.Multer.File) {
+  async uploadRoomImage(maPhong: number, file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('Vui lòng chọn file hình ảnh!');
     }
@@ -274,7 +274,7 @@ export class PhongService {
 
     return {
       message: 'Upload hình ảnh phòng thành công!',
-      content: this.formatPhong(updated),
+      content: this.formatRoom(updated),
     };
   }
 }
