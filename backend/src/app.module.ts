@@ -25,11 +25,22 @@ import { CommentModule } from "./modules-api/comment/comment.module";
     RoomModule,
     BookingModule,
     CommentModule,
-    JwtModule.register({
+    JwtModule.registerAsync({
       global: true,
-      secret:
-        process.env.JWT_SECRET || "CYBERSOFT_AIRBNB_SECRET_KEY_2026_!@#$%^",
-      signOptions: { expiresIn: "7d" },
+      useFactory: () => {
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
+          throw new Error(
+            "FATAL: Biến môi trường JWT_SECRET chưa được thiết lập trong .env!",
+          );
+        }
+        return {
+          secret,
+          signOptions: {
+            expiresIn: (process.env.JWT_EXPIRES_IN || "7d") as any,
+          },
+        };
+      },
     }),
   ],
   controllers: [AppController],

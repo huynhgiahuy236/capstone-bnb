@@ -10,16 +10,23 @@ export class UploadService {
   private hasCloudinary = false;
 
   constructor() {
-    if (process.env.CLOUDINARY_URL) {
+    const cloudName = process.env.CLOUDINARY_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+    if (cloudName && apiKey && apiSecret) {
       cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_NAME || "syq6ytly",
-        api_key: process.env.CLOUDINARY_API_KEY || "187335816716459",
-        api_secret:
-          process.env.CLOUDINARY_API_SECRET || "y0lEoUgwB72mWX6Sj8qnRGeHCL4",
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret,
         secure: true,
       });
       this.hasCloudinary = true;
       this.logger.log("☁️ [CLOUDINARY] Cấu hình Cloudinary sẵn sàng!");
+    } else {
+      this.logger.warn(
+        "⚠️ [CLOUDINARY] Chưa cấu hình API Keys trong .env. Sử dụng lưu trữ cục bộ (Local Disk).",
+      );
     }
   }
 

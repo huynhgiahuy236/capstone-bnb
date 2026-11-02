@@ -35,9 +35,14 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     try {
+      const secret = process.env.JWT_SECRET;
+      if (!secret) {
+        throw new UnauthorizedException(
+          "Lỗi cấu hình server: Chưa thiết lập JWT_SECRET!",
+        );
+      }
       const payload = await this.jwtService.verifyAsync(token, {
-        secret:
-          process.env.JWT_SECRET || "CYBERSOFT_AIRBNB_SECRET_KEY_2026_!@#$%^",
+        secret,
       });
       request["user"] = payload;
     } catch {
