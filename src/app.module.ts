@@ -6,9 +6,11 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { ResponseTransformInterceptor } from './common/interceptors/response.interceptor';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
+import { PrismaModule } from './modules-system/prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'CYBERSOFT_AIRBNB_SECRET_KEY_2026_!@#$%^',
@@ -36,4 +38,3 @@ import { RolesGuard } from './common/guards/roles.guard';
   ],
 })
 export class AppModule {}
-

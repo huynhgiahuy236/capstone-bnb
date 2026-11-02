@@ -66,17 +66,18 @@
     - [x] `guards/jwt-auth.guard.ts` (JWT Guard) & `guards/roles.guard.ts`.
   - [x] Commit, push và **chờ duyệt**.
 
-- [ ] **Giai đoạn 2: Thiết kế Database & Prisma ORM Schema**
-  - [ ] Tạo nhánh `feature/database-and-prisma-schema`.
-  - [ ] Viết `prisma/schema.prisma` cho 5 bảng chuẩn theo ERD:
-    - [ ] `NguoiDung`: `id`, `name`, `email`, `pass_word`, `phone`, `birth_day`, `gender`, `role`, `avatar`.
-    - [ ] `ViTri`: `id`, `ten_vi_tri`, `tinh_thanh`, `quoc_gia`, `hinh_anh`.
-    - [ ] `Phong`: `id`, `ten_phong`, `khach`, `phong_ngu`, `giuong`, `phong_tam`, `mo_ta`, `gia_tien`, các tiện ích boolean (`may_giat`, `ban_la`, `tivi`, `dieu_hoa`, `wifi`, `bep`, `do_xe`, `ho_boi`, `ban_ui`), `hinh_anh`, `ma_vi_tri`.
-    - [ ] `DatPhong`: `id`, `ma_phong`, `ngay_den`, `ngay_di`, `so_luong_khach`, `ma_nguoi_dat`.
-    - [ ] `BinhLuan`: `id`, `ma_phong`, `ma_nguoi_binh_luan`, `ngay_binh_luan`, `noi_dung`, `sao_binh_luan`.
-  - [ ] Cấu hình `PrismaModule` & `PrismaService`.
-  - [ ] Chạy migration khởi tạo bảng trên MySQL.
-  - [ ] Commit, push và **chờ duyệt**.
+- [x] **Giai đoạn 2: Thiết kế Database & Prisma ORM Schema** (Hoàn thành)
+  - [x] Tạo nhánh `feature/database-and-prisma-schema`.
+  - [x] Tạo file SQL thuần chuẩn: `prisma/airbnb_database.sql` (hỗ trợ import trực tiếp vào MySQL/TablePlus).
+  - [x] Viết `prisma/schema.prisma` cho 5 bảng chuẩn theo ERD:
+    - [x] `NguoiDung`: `id`, `name`, `email`, `pass_word`, `phone`, `birth_day`, `gender`, `role`, `avatar`, `googleId`.
+    - [x] `ViTri`: `id`, `ten_vi_tri`, `tinh_thanh`, `quoc_gia`, `hinh_anh`.
+    - [x] `Phong`: `id`, `ten_phong`, `khach`, `phong_ngu`, `giuong`, `phong_tam`, `mo_ta`, `gia_tien`, 10 tiện ích boolean, `hinh_anh`, `ma_vi_tri`.
+    - [x] `DatPhong`: `id`, `ma_phong`, `ngay_den`, `ngay_di`, `so_luong_khach`, `ma_nguoi_dat`.
+    - [x] `BinhLuan`: `id`, `ma_phong`, `ma_nguoi_binh_luan`, `ngay_binh_luan`, `noi_dung`, `sao_binh_luan`.
+  - [x] Cấu hình `PrismaModule` & `PrismaService` (@Global).
+  - [x] Chạy `npx prisma generate` sinh Prisma Client thành công.
+  - [x] Commit, push và **chờ duyệt**.
 
 - [ ] **Giai đoạn 3: Module Auth & NguoiDung (10 API)**
   - [ ] Tạo nhánh `feature/auth-and-users-module`.
@@ -139,3 +140,4 @@
   - [ ] Tạo file export Postman Collection để nộp bài.
   - [ ] Viết `README.md` hướng dẫn chạy dự án, danh sách 36 API.
   - [ ] Merge `develop` vào `main`, gắn tag version `v1.0.0` và push lên GitHub.
+
