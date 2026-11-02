@@ -7,9 +7,20 @@ type StoredSession = {
 };
   
 const getBaseUrl = (): string => {
-  const envUrl =
+  let envUrl =
     process.env.NEXT_PUBLIC_API_URL ||
     "https://capstone-backend-airbnb.vercel.app/api";
+
+  // Tự động chuyển hướng sang Backend Vercel nếu chạy trên Vercel mà env vô tình trỏ về localhost
+  const isVercelServer = Boolean(process.env.VERCEL);
+  const isVercelBrowser =
+    typeof window !== "undefined" &&
+    !window.location.hostname.includes("localhost");
+
+  if ((isVercelServer || isVercelBrowser) && envUrl.includes("localhost")) {
+    envUrl = "https://capstone-backend-airbnb.vercel.app/api";
+  }
+
   const trimmed = envUrl.trim().replace(/\/+$/, "");
   return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
 };
