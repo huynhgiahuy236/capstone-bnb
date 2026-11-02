@@ -52,19 +52,19 @@
 
 ## 🚀 TIẾN ĐỘ 6 GIAI ĐOẠN
 
-- [ ] **Giai đoạn 1: Nền tảng NestJS & Hệ thống Common**
-  - [ ] Khởi tạo Git repository trong `capstone-bnb`, kết nối remote `origin`.
-  - [ ] Tạo nhánh `main` và `develop`, checkout sang `feature/init-project-and-common`.
-  - [ ] Khởi tạo dự án NestJS sạch với TypeScript, cấu hình CORS, static file `public/`.
-  - [ ] Cài đặt các dependencies cần thiết (`@nestjs/swagger`, `class-validator`, `class-transformer`, `bcrypt`, `@nestjs/jwt`, `passport-jwt`, `@prisma/client`, `prisma`).
-  - [ ] Tích hợp Swagger UI tại `/api/docs` với Bearer Auth.
-  - [ ] Viết module `src/common/`:
-    - [ ] `constants/status-code.constant.ts` (Kế thừa từ `statusCode.helper.js`).
-    - [ ] `interceptors/response.interceptor.ts` (Chuẩn hóa response thành công).
-    - [ ] `filters/http-exception.filter.ts` (Bắt lỗi toàn cục, format đồng bộ).
-    - [ ] `decorators/public.decorator.ts`, `decorators/roles.decorator.ts`.
-    - [ ] `guards/protect.guard.ts` (JWT Guard) & `guards/role.guard.ts`.
-  - [ ] Commit, push và **chờ duyệt**.
+- [x] **Giai đoạn 1: Nền tảng NestJS & Hệ thống Common** (Hoàn thành)
+  - [x] Khởi tạo Git repository trong `capstone-bnb`, kết nối remote `origin`.
+  - [x] Tạo nhánh `main` và `develop`, checkout sang `feature/init-project-and-common`.
+  - [x] Khởi tạo dự án NestJS sạch với TypeScript, cấu hình CORS, static file `public/`.
+  - [x] Cài đặt các dependencies cần thiết (`@nestjs/swagger`, `class-validator`, `class-transformer`, `bcrypt`, `@nestjs/jwt`, `passport-jwt`, `@prisma/client`, `prisma`).
+  - [x] Tích hợp Swagger UI tại `/api/docs` với Bearer Auth.
+  - [x] Viết module `src/common/`:
+    - [x] `constants/status-code.constant.ts` (Kế thừa từ `statusCode.helper.js`).
+    - [x] `interceptors/response.interceptor.ts` (Chuẩn hóa response thành công).
+    - [x] `filters/http-exception.filter.ts` (Bắt lỗi toàn cục, format đồng bộ).
+    - [x] `decorators/public.decorator.ts`, `decorators/roles.decorator.ts`, `decorators/current-user.decorator.ts`.
+    - [x] `guards/jwt-auth.guard.ts` (JWT Guard) & `guards/roles.guard.ts`.
+  - [x] Commit, push và **chờ duyệt**.
 
 - [ ] **Giai đoạn 2: Thiết kế Database & Prisma ORM Schema**
   - [ ] Tạo nhánh `feature/database-and-prisma-schema`.
