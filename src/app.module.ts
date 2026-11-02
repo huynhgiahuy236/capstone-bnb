@@ -10,6 +10,8 @@ import { PrismaModule } from './modules-system/prisma/prisma.module';
 import { CommonServicesModule } from './common/services/common-services.module';
 import { AuthModule } from './modules-api/auth/auth.module';
 import { UsersModule } from './modules-api/users/users.module';
+import { ViTriModule } from './modules-api/vi-tri/vi-tri.module';
+import { PhongModule } from './modules-api/phong/phong.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { UsersModule } from './modules-api/users/users.module';
     CommonServicesModule,
     AuthModule,
     UsersModule,
+    ViTriModule,
+    PhongModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'CYBERSOFT_AIRBNB_SECRET_KEY_2026_!@#$%^',

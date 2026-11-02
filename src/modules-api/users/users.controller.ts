@@ -142,3 +142,4 @@ export class UsersController {
     return this.usersService.uploadAvatar(userId, file);
   }
 }
+

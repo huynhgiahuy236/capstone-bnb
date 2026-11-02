@@ -95,26 +95,26 @@
     - [x] `POST /api/users/upload-avatar`: Upload file avatar (Hỗ trợ cả Cloudinary & Local).
   - [x] Commit, push và **chờ duyệt**.
 
-- [ ] **Giai đoạn 4: Module ViTri & Phong (15 API)**
-  - [ ] Tạo nhánh `feature/vi-tri-and-phong-module`.
-  - [ ] **Module ViTri (7 API)**:
-    - [ ] `GET /api/vi-tri`: Lấy danh sách vị trí.
-    - [ ] `POST /api/vi-tri`: Thêm vị trí mới.
-    - [ ] `GET /api/vi-tri/phan-trang-tim-kiem`: Phân trang tìm kiếm vị trí.
-    - [ ] `GET /api/vi-tri/{id}`: Xem chi tiết vị trí.
-    - [ ] `PUT /api/vi-tri/{id}`: Cập nhật vị trí.
-    - [ ] `DELETE /api/vi-tri/{id}`: Xóa vị trí.
-    - [ ] `POST /api/vi-tri/upload-hinh-vitri`: Upload hình ảnh vị trí.
-  - [ ] **Module Phong (8 API)**:
-    - [ ] `GET /api/phong-thue`: Lấy toàn bộ danh sách phòng.
-    - [ ] `POST /api/phong-thue`: Thêm phòng mới.
-    - [ ] `GET /api/phong-thue/lay-phong-theo-vi-tri`: Lấy danh sách phòng theo mã vị trí.
-    - [ ] `GET /api/phong-thue/phan-trang-tim-kiem`: Phân trang & tìm kiếm phòng.
-    - [ ] `GET /api/phong-thue/{id}`: Xem chi tiết phòng.
-    - [ ] `PUT /api/phong-thue/{id}`: Cập nhật thông tin phòng.
-    - [ ] `DELETE /api/phong-thue/{id}`: Xóa phòng.
-    - [ ] `POST /api/phong-thue/upload-hinh-phong`: Upload hình ảnh phòng.
-  - [ ] Commit, push và **chờ duyệt**.
+- [x] **Giai đoạn 4: Module ViTri & Phong (15 API)** (Hoàn thành)
+  - [x] Tạo nhánh `feature/vi-tri-and-phong-module`.
+  - [x] **Module ViTri (7 API)**:
+    - [x] `GET /api/vi-tri`: Lấy danh sách vị trí.
+    - [x] `POST /api/vi-tri`: Thêm vị trí mới (Yêu cầu ADMIN).
+    - [x] `GET /api/vi-tri/phan-trang-tim-kiem`: Phân trang tìm kiếm vị trí.
+    - [x] `GET /api/vi-tri/{id}`: Xem chi tiết vị trí.
+    - [x] `PUT /api/vi-tri/{id}`: Cập nhật vị trí (Yêu cầu ADMIN).
+    - [x] `DELETE /api/vi-tri/{id}`: Xóa vị trí (Yêu cầu ADMIN).
+    - [x] `POST /api/vi-tri/upload-hinh-vitri`: Upload hình ảnh vị trí (Cloudinary & Local).
+  - [x] **Module Phong (8 API)**:
+    - [x] `GET /api/phong-thue`: Lấy toàn bộ danh sách phòng (kèm thông tin vị trí).
+    - [x] `POST /api/phong-thue`: Thêm phòng mới với 10 tiện ích boolean (Yêu cầu ADMIN).
+    - [x] `GET /api/phong-thue/lay-phong-theo-vi-tri`: Lấy danh sách phòng theo mã vị trí (?maViTri=...).
+    - [x] `GET /api/phong-thue/phan-trang-tim-kiem`: Phân trang & tìm kiếm phòng.
+    - [x] `GET /api/phong-thue/{id}`: Xem chi tiết phòng.
+    - [x] `PUT /api/phong-thue/{id}`: Cập nhật thông tin phòng (Yêu cầu ADMIN).
+    - [x] `DELETE /api/phong-thue/{id}`: Xóa phòng (Yêu cầu ADMIN).
+    - [x] `POST /api/phong-thue/upload-hinh-phong`: Upload hình ảnh phòng (Cloudinary & Local).
+  - [x] Commit, push và **chờ duyệt**.
 
 - [ ] **Giai đoạn 5: Module DatPhong & BinhLuan (11 API)**
   - [ ] Tạo nhánh `feature/dat-phong-and-binh-luan-module`.

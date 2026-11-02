@@ -68,3 +68,4 @@ export class UploadService {
     return `/public/images/${folder}/${filename}`;
   }
 }
+
