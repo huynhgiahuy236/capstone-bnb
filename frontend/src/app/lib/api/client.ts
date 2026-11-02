@@ -6,8 +6,16 @@ type StoredSession = {
   };
 };
   
+const getBaseUrl = (): string => {
+  const envUrl =
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://capstone-backend-airbnb.vercel.app/api";
+  const trimmed = envUrl.trim().replace(/\/+$/, "");
+  return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
+};
+
 export const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: getBaseUrl(),
   headers: {
     accept: "application/json",
     tokenCybersoft: process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT ?? "",

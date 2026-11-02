@@ -33,7 +33,10 @@ export const getOptionalImageSource = (value?: string | null) => {
     return source;
   }
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "");
+  const apiUrl = (
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://capstone-backend-airbnb.vercel.app/api"
+  ).replace(/\/api\/?$/, "");
   if (!apiUrl) return null;
 
   if (source.startsWith("/")) {
