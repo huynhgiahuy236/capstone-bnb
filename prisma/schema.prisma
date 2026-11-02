@@ -124,3 +124,4 @@ model BinhLuan {
   @@index([ma_nguoi_binh_luan], map: "idx_binhluan_nguoidung")
   @@map("BinhLuan")
 }
+

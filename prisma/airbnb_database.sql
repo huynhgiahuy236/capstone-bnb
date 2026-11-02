@@ -135,3 +135,4 @@ CREATE TABLE IF NOT EXISTS `BinhLuan` (
     CONSTRAINT `fk_binhluan_phong` FOREIGN KEY (`ma_phong`) REFERENCES `Phong` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `fk_binhluan_nguoidung` FOREIGN KEY (`ma_nguoi_binh_luan`) REFERENCES `NguoiDung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

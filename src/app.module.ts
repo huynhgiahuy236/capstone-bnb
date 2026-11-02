@@ -7,10 +7,16 @@ import { ResponseTransformInterceptor } from './common/interceptors/response.int
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { PrismaModule } from './modules-system/prisma/prisma.module';
+import { CommonServicesModule } from './common/services/common-services.module';
+import { AuthModule } from './modules-api/auth/auth.module';
+import { UsersModule } from './modules-api/users/users.module';
 
 @Module({
   imports: [
     PrismaModule,
+    CommonServicesModule,
+    AuthModule,
+    UsersModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'CYBERSOFT_AIRBNB_SECRET_KEY_2026_!@#$%^',

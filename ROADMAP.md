@@ -79,21 +79,21 @@
   - [x] Chạy `npx prisma generate` sinh Prisma Client thành công.
   - [x] Commit, push và **chờ duyệt**.
 
-- [ ] **Giai đoạn 3: Module Auth & NguoiDung (10 API)**
-  - [ ] Tạo nhánh `feature/auth-and-users-module`.
-  - [ ] **Module Auth (2 API)**:
-    - [ ] `POST /api/auth/signup`: Đăng ký tài khoản (mã hóa mật khẩu `bcrypt`).
-    - [ ] `POST /api/auth/signin`: Đăng nhập, cấp JWT Token.
-  - [ ] **Module NguoiDung (8 API)**:
-    - [ ] `GET /api/users`: Lấy danh sách toàn bộ người dùng.
-    - [ ] `POST /api/users`: Tạo người dùng mới.
-    - [ ] `DELETE /api/users`: Xóa người dùng theo ID.
-    - [ ] `GET /api/users/phan-trang-tim-kiem`: Phân trang & tìm kiếm người dùng.
-    - [ ] `GET /api/users/{id}`: Xem chi tiết 1 người dùng.
-    - [ ] `PUT /api/users/{id}`: Cập nhật thông tin người dùng.
-    - [ ] `GET /api/users/search/{TenNguoiDung}`: Tìm kiếm người dùng theo tên.
-    - [ ] `POST /api/users/upload-avatar`: Upload file avatar (Multer).
-  - [ ] Commit, push và **chờ duyệt**.
+- [x] **Giai đoạn 3: Module Auth & NguoiDung (10 API)** (Hoàn thành)
+  - [x] Tạo nhánh `feature/auth-and-users-module`.
+  - [x] **Module Auth (2 API)**:
+    - [x] `POST /api/auth/signup`: Đăng ký tài khoản (mã hóa mật khẩu `bcrypt`, kiểm tra trùng email).
+    - [x] `POST /api/auth/signin`: Đăng nhập, cấp JWT Access Token.
+  - [x] **Module NguoiDung (8 API)**:
+    - [x] `GET /api/users`: Lấy danh sách toàn bộ người dùng (loại bỏ pass_word).
+    - [x] `POST /api/users`: Tạo người dùng mới (Yêu cầu ADMIN).
+    - [x] `DELETE /api/users`: Xóa người dùng theo ID (?id=...) (Yêu cầu ADMIN).
+    - [x] `GET /api/users/phan-trang-tim-kiem`: Phân trang & tìm kiếm người dùng.
+    - [x] `GET /api/users/{id}`: Xem chi tiết 1 người dùng theo ID.
+    - [x] `PUT /api/users/{id}`: Cập nhật thông tin người dùng.
+    - [x] `GET /api/users/search/{TenNguoiDung}`: Tìm kiếm người dùng theo tên.
+    - [x] `POST /api/users/upload-avatar`: Upload file avatar (Hỗ trợ cả Cloudinary & Local).
+  - [x] Commit, push và **chờ duyệt**.
 
 - [ ] **Giai đoạn 4: Module ViTri & Phong (15 API)**
   - [ ] Tạo nhánh `feature/vi-tri-and-phong-module`.
