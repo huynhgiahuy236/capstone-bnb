@@ -28,8 +28,8 @@ import { LocationService } from "./location.service";
 import { CreateLocationDto } from "./dto/create-location.dto";
 import { UpdateLocationDto } from "./dto/update-location.dto";
 import { PaginationLocationDto } from "./dto/pagination-location.dto";
-import { Public } from "src/common/decorators/public.decorator";
-import { Roles } from "src/common/decorators/roles.decorator";
+import { Public } from "../../common/decorators/public.decorator";
+import { Roles } from "../../common/decorators/roles.decorator";
 
 @ApiTags("ViTri")
 @Controller("vi-tri")

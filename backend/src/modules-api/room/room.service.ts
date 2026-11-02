@@ -3,11 +3,11 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
-import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { PrismaService } from "../../modules-system/prisma/prisma.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { PaginationRoomDto } from "./dto/pagination-room.dto";
-import { UploadService } from "src/common/services/upload.service";
+import { UploadService } from "../../common/services/upload.service";
 
 @Injectable()
 export class RoomService {

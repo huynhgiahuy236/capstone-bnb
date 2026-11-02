@@ -20,7 +20,7 @@ import {
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { UpdateCommentDto } from "./dto/update-comment.dto";
-import { Public } from "src/common/decorators/public.decorator";
+import { Public } from "../../common/decorators/public.decorator";
 
 @ApiTags("BinhLuan")
 @Controller("binh-luan")

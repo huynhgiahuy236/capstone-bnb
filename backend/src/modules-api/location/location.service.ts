@@ -3,11 +3,11 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
-import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { PrismaService } from "../../modules-system/prisma/prisma.service";
 import { CreateLocationDto } from "./dto/create-location.dto";
 import { UpdateLocationDto } from "./dto/update-location.dto";
 import { PaginationLocationDto } from "./dto/pagination-location.dto";
-import { UploadService } from "src/common/services/upload.service";
+import { UploadService } from "../../common/services/upload.service";
 
 @Injectable()
 export class LocationService {

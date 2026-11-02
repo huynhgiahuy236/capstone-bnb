@@ -28,8 +28,8 @@ import { RoomService } from "./room.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { PaginationRoomDto } from "./dto/pagination-room.dto";
-import { Public } from "src/common/decorators/public.decorator";
-import { Roles } from "src/common/decorators/roles.decorator";
+import { Public } from "../../common/decorators/public.decorator";
+import { Roles } from "../../common/decorators/roles.decorator";
 
 @ApiTags("Phong")
 @Controller("phong-thue")

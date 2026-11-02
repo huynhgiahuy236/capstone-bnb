@@ -14,7 +14,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
 import { BookingService } from "./booking.service";
 import { CreateBookingDto } from "./dto/create-booking.dto";
 import { UpdateBookingDto } from "./dto/update-booking.dto";
-import { Public } from "src/common/decorators/public.decorator";
+import { Public } from "../../common/decorators/public.decorator";
 
 @ApiTags("DatPhong")
 @Controller("dat-phong")

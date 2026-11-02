@@ -5,11 +5,11 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import * as bcrypt from "bcryptjs";
-import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { PrismaService } from "../../modules-system/prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { PaginationUserDto } from "./dto/pagination-user.dto";
-import { UploadService } from "src/common/services/upload.service";
+import { UploadService } from "../../common/services/upload.service";
 
 @Injectable()
 export class UsersService {
