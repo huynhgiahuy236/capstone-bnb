@@ -178,12 +178,14 @@
   - [x] Xác minh 100% npm run lint và npm run build.
   - [x] Merge vào develop và push lên GitHub.
 
-- [ ] **Giai đoạn 5: Booking Flow, Availability Check & Comments (Frontend)**
-  - [ ] Tạo nhánh feature/frontend-booking-and-comments.
-  - [ ] Thuật toán kiểm tra phòng trống và chống trùng lịch đặt phòng (overlap prevention).
-  - [ ] Tạo đơn đặt phòng POST /dat-phong với tính toán giá tiền tự động theo số đêm.
-  - [ ] Trang lịch sử chuyến đi của tôi (My Trips / Booking History) kèm hủy phòng DELETE /dat-phong/{id}.
-  - [ ] Hệ thống bình luận và đánh giá sao (1-5 sao) theo phòng /binh-luan/lay-binh-luan-theo-phong/{MaPhong}.
+- [x] **Giai đoạn 5: Booking Flow, Availability Check & Comments (Frontend)** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-booking-and-comments.
+  - [x] Thuật toán kiểm tra phòng trống và chống trùng lịch đặt phòng (overlap prevention).
+  - [x] Tạo đơn đặt phòng POST /dat-phong với tính toán giá tiền tự động theo số đêm.
+  - [x] Trang lịch sử chuyến đi của tôi (My Trips / Booking History) kèm hủy phòng DELETE /dat-phong/{id}.
+  - [x] Hệ thống bình luận và đánh giá sao (1-5 sao) theo phòng /binh-luan/lay-binh-luan-theo-phong/{MaPhong}.
+  - [x] Xác minh 100% npm run lint và npm run build.
+  - [x] Merge vào develop và push lên GitHub.
 
 - [ ] **Giai đoạn 6: Admin Dashboard, Vitest Tests, Fullstack Docker & Bàn giao**
   - [ ] Tạo nhánh feature/frontend-admin-and-docker.
