@@ -27,6 +27,7 @@ const getBaseUrl = (): string => {
 
 export const axiosClient = axios.create({
   baseURL: getBaseUrl(),
+  timeout: 10000,
   headers: {
     accept: "application/json",
     tokenCybersoft: process.env.NEXT_PUBLIC_TOKEN_CYBERSOFT ?? "",
@@ -34,6 +35,8 @@ export const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
+  config.baseURL = getBaseUrl();
+
   if (typeof window === "undefined" || config.headers.token) {
     return config;
   }

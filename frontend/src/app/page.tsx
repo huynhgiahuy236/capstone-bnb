@@ -74,10 +74,22 @@ const getHomeData = async () => {
       commentsResponse,
       locationsResponse,
     ] = await Promise.all([
-      getRooms(1, 8).catch(() => null),
-      getAllRooms().catch(() => null),
-      getComments().catch(() => null),
-      getLocations().catch(() => null),
+      getRooms(1, 8).catch((err) => {
+        console.error("getRooms error:", err?.message || err);
+        return null;
+      }),
+      getAllRooms().catch((err) => {
+        console.error("getAllRooms error:", err?.message || err);
+        return null;
+      }),
+      getComments().catch((err) => {
+        console.error("getComments error:", err?.message || err);
+        return null;
+      }),
+      getLocations().catch((err) => {
+        console.error("getLocations error:", err?.message || err);
+        return null;
+      }),
     ]);
 
     const allRooms = Array.isArray(allRoomsResponse?.content)
