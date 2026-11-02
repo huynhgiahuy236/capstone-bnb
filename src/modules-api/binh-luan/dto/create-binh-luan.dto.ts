@@ -43,3 +43,4 @@ export class CreateBinhLuanDto {
   @Max(5, { message: 'Đánh giá tối đa là 5 sao' })
   saoBinhLuan: number;
 }
+

@@ -91,3 +91,4 @@ export class BinhLuanController {
     return this.binhLuanService.remove(id);
   }
 }
+

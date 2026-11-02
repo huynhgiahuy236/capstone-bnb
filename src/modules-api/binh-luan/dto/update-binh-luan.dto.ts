@@ -16,3 +16,4 @@ export class UpdateBinhLuanDto {
   @Max(5)
   saoBinhLuan?: number;
 }
+

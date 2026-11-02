@@ -177,3 +177,4 @@ export class BinhLuanService {
     return list.map((item) => this.formatBinhLuan(item));
   }
 }
+

@@ -32,3 +32,4 @@ export class CreateDatPhongDto {
   @IsInt()
   maNguoiDung: number;
 }
+

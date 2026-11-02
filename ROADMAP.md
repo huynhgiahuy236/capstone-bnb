@@ -133,11 +133,11 @@
     - [x] `GET /api/binh-luan/lay-binh-luan-theo-phong/{MaPhong}`: Lấy danh sách bình luận theo phòng.
   - [x] Commit, push và **chờ duyệt**.
 
-- [ ] **Giai đoạn 6: Docker hóa, Clean Code & Bàn giao nộp bài**
-  - [ ] Tạo nhánh `feature/docker-and-docs`.
-  - [ ] Rà soát Clean Code (quy tắc đặt tên, bỏ imports/code thừa, format Prettier).
-  - [ ] Viết `Dockerfile` và `docker-compose.yml`.
-  - [ ] Tạo file export Postman Collection để nộp bài.
-  - [ ] Viết `README.md` hướng dẫn chạy dự án, danh sách 36 API.
-  - [ ] Merge `develop` vào `main`, gắn tag version `v1.0.0` và push lên GitHub.
+- [x] **Giai đoạn 6: Docker hóa, Clean Code & Bàn giao nộp bài** (Hoàn thành)
+  - [x] Tạo nhánh `feature/docker-and-docs`.
+  - [x] Rà soát Clean Code (quy tắc đặt tên, bỏ imports/code thừa, format Prettier, tuyệt đối không lưu mock data).
+  - [x] Viết `Dockerfile` và `docker-compose.yml` (tự động khởi chạy cả NestJS App và MySQL Container).
+  - [x] Tạo file export Postman Collection: `postman/capstone_airbnb.postman_collection.json` để nộp bài.
+  - [x] Viết `README.md` hướng dẫn chạy dự án, sơ đồ ERD, danh sách 36 API hoàn chỉnh.
+  - [x] Merge `develop` vào `main`, gắn tag version `v1.0.0` và push lên GitHub.
 

@@ -1,0 +1,922 @@
+{
+  "info": {
+    "name": "Capstone Airbnb API - CyberSoft NodeJS 56",
+    "description": "Bộ sưu tập đặc tả 36 API dự án Capstone Airbnb hoàn chỉnh",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Auth (Xác thực)",
+      "item": [
+        {
+          "name": "POST Đăng ký tài khoản (Signup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nguyễn Văn A\",\n  \"email\": \"user@gmail.com\",\n  \"password\": \"password123\",\n  \"phone\": \"0901234567\",\n  \"birthday\": \"2000-01-01\",\n  \"gender\": \"Nam\",\n  \"role\": \"USER\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST Đăng nhập (Signin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/signin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "signin"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@gmail.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. NguoiDung (Quản lý người dùng)",
+      "item": [
+        {
+          "name": "GET Lấy danh sách toàn bộ người dùng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Phân trang và tìm kiếm người dùng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users/phan-trang-tim-kiem?pageIndex=1&pageSize=10&keyword=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "phan-trang-tim-kiem"
+              ],
+              "query": [
+                {
+                  "key": "pageIndex",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                },
+                {
+                  "key": "keyword",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Tìm kiếm người dùng theo tên",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users/search/Nam",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "search",
+                "Nam"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Chi tiết người dùng theo ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Tạo người dùng mới (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Trần Thị B\",\n  \"email\": \"admin2@gmail.com\",\n  \"password\": \"password123\",\n  \"phone\": \"0912345678\",\n  \"role\": \"ADMIN\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Cập nhật thông tin người dùng",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nguyễn Văn A (Updated)\",\n  \"phone\": \"0999888777\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Xóa người dùng (?id=...)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?id=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Upload Avatar người dùng",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/upload-avatar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "upload-avatar"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "formFile",
+                  "type": "file"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. ViTri (Quản lý vị trí)",
+      "item": [
+        {
+          "name": "GET Lấy danh sách vị trí",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Phân trang tìm kiếm vị trí",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=10&keyword=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri",
+                "phan-trang-tim-kiem"
+              ],
+              "query": [
+                {
+                  "key": "pageIndex",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                },
+                {
+                  "key": "keyword",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Chi tiết vị trí theo ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Thêm vị trí mới (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenViTri\": \"Quận 1\",\n  \"tinhThanh\": \"Hồ Chí Minh\",\n  \"quocGia\": \"Việt Nam\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Cập nhật vị trí",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenViTri\": \"Quận 1 Trung Tâm\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Xóa vị trí",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Upload hình vị trí",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vi-tri/upload-hinh-vitri?maViTri=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vi-tri",
+                "upload-hinh-vitri"
+              ],
+              "query": [
+                {
+                  "key": "maViTri",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "formFile",
+                  "type": "file"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Phong (Quản lý phòng thuê)",
+      "item": [
+        {
+          "name": "GET Lấy toàn bộ danh sách phòng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Lấy phòng theo mã vị trí",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue/lay-phong-theo-vi-tri?maViTri=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue",
+                "lay-phong-theo-vi-tri"
+              ],
+              "query": [
+                {
+                  "key": "maViTri",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Phân trang tìm kiếm phòng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue/phan-trang-tim-kiem?pageIndex=1&pageSize=10&keyword=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue",
+                "phan-trang-tim-kiem"
+              ],
+              "query": [
+                {
+                  "key": "pageIndex",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                },
+                {
+                  "key": "keyword",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Chi tiết phòng theo ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Thêm phòng mới (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenPhong\": \"Căn hộ Studio Landmark 81\",\n  \"khach\": 2,\n  \"phongNgu\": 1,\n  \"giuong\": 1,\n  \"phongTam\": 1,\n  \"moTa\": \"Căn hộ cao cấp view toàn thành phố\",\n  \"giaTien\": 1200000,\n  \"mayGiat\": true,\n  \"banLa\": true,\n  \"tivi\": true,\n  \"dieuHoa\": true,\n  \"wifi\": true,\n  \"bep\": true,\n  \"doXe\": true,\n  \"hoBoi\": true,\n  \"banUi\": true,\n  \"maViTri\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Cập nhật thông tin phòng",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"giaTien\": 1100000\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Xóa phòng",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Upload hình phòng",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/phong-thue/upload-hinh-phong?maPhong=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phong-thue",
+                "upload-hinh-phong"
+              ],
+              "query": [
+                {
+                  "key": "maPhong",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "formFile",
+                  "type": "file"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. DatPhong (Quản lý đặt phòng)",
+      "item": [
+        {
+          "name": "GET Lấy danh sách toàn bộ đặt phòng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/dat-phong",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dat-phong"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Lấy danh sách đặt phòng theo mã người dùng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/dat-phong/lay-theo-nguoi-dung/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dat-phong",
+                "lay-theo-nguoi-dung",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Chi tiết đặt phòng theo ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/dat-phong/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dat-phong",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Đặt phòng mới",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dat-phong",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dat-phong"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maPhong\": 1,\n  \"ngayDen\": \"2026-12-01T14:00:00.000Z\",\n  \"ngayDi\": \"2026-12-05T12:00:00.000Z\",\n  \"soLuongKhach\": 2,\n  \"maNguoiDung\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Cập nhật thông tin đặt phòng",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dat-phong/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dat-phong",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"soLuongKhach\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Hủy đặt phòng",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/dat-phong/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dat-phong",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. BinhLuan (Quản lý bình luận)",
+      "item": [
+        {
+          "name": "GET Lấy tất cả bình luận",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/binh-luan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "binh-luan"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Lấy bình luận theo phòng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/binh-luan/lay-binh-luan-theo-phong/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "binh-luan",
+                "lay-binh-luan-theo-phong",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Chi tiết bình luận theo ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/binh-luan/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "binh-luan",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Thêm bình luận mới",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/binh-luan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "binh-luan"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maPhong\": 1,\n  \"maNguoiBinhLuan\": 1,\n  \"noiDung\": \"Căn hộ rất sạch sẽ, tiện nghi và view xuất sắc!\",\n  \"saoBinhLuan\": 5\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Sửa bình luận",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/binh-luan/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "binh-luan",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"noiDung\": \"Đánh giá lại: dịch vụ rất tốt!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Xóa bình luận",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/binh-luan/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "binh-luan",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

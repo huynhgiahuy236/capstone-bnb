@@ -8,3 +8,4 @@ import { BinhLuanController } from './binh-luan.controller';
   exports: [BinhLuanService],
 })
 export class BinhLuanModule {}
+
