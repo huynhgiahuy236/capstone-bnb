@@ -9,9 +9,7 @@ import cookieParser from "cookie-parser";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
 
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+export async function configureApp(app: NestExpressApplication) {
   // Parse Cookie
   app.use(cookieParser());
 
@@ -68,16 +66,36 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api/docs", app, document, {
+
+  const swaggerUiOptions = {
+    customCssUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css",
+    customJs: [
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-standalone-preset.js",
+    ],
+    customSiteTitle: "Airbnb API Docs - CyberSoft Capstone",
     swaggerOptions: {
       persistAuthorization: true,
     },
-  });
+  };
+
+  // Setup on both /swagger and /api/docs for maximum compatibility
+  SwaggerModule.setup("swagger", app, document, swaggerUiOptions);
+  SwaggerModule.setup("api/docs", app, document, swaggerUiOptions);
+}
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  await configureApp(app);
 
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
   console.log(`🚀 Server đang chạy tại: http://localhost:${PORT}`);
-  console.log(`📑 Swagger UI đang mở tại: http://localhost:${PORT}/api/docs`);
+  console.log(`📑 Swagger UI đang mở tại: http://localhost:${PORT}/swagger`);
+  console.log(`📑 Swagger UI (docs): http://localhost:${PORT}/api/docs`);
 }
 
-bootstrap();
+if (!process.env.VERCEL) {
+  bootstrap();
+}
