@@ -31,6 +31,11 @@ export async function configureApp(app: NestExpressApplication) {
   // Global Prefix
   app.setGlobalPrefix("api");
 
+  // Redirect root "/" to "/swagger"
+  app.getHttpAdapter().get("/", (req: any, res: any) => {
+    res.redirect("/swagger");
+  });
+
   // Global Validation Pipe
   app.useGlobalPipes(
     new ValidationPipe({

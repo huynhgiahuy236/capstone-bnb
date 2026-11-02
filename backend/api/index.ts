@@ -11,6 +11,11 @@ import { configureApp } from "../src/main";
 const server: Express = express();
 let isAppReady = false;
 
+// Tự động chuyển hướng từ trang chủ "/" sang tài liệu Swagger "/swagger"
+server.get("/", (req: Request, res: Response) => {
+  return res.redirect("/swagger");
+});
+
 async function bootstrapServerless(expressInstance: Express): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
