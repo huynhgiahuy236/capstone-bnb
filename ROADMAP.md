@@ -1,4 +1,4 @@
-# 🗺️ LỘ TRÌNH TRIỂN KHAI DỰ ÁN CAPSTONE AIRBNB (NESTJS)
+﻿# 🗺️ LỘ TRÌNH TRIỂN KHAI DỰ ÁN CAPSTONE AIRBNB (NESTJS)
 
 > **Dự án**: Capstone Backend Airbnb - Khóa NodeJS 56 (CyberSoft)  
 > **Repository**: [https://github.com/huynhgiahuy236/capstone-bnb.git](https://github.com/huynhgiahuy236/capstone-bnb.git)  
@@ -141,3 +141,56 @@
   - [x] Viết `README.md` hướng dẫn chạy dự án, sơ đồ ERD, danh sách 36 API hoàn chỉnh.
   - [x] Merge `develop` vào `main`, gắn tag version `v1.0.0` và push lên GitHub.
 
+
+---
+
+## 🚀 PHẦN II: LỘ TRÌNH TÍCH HỢP MONOREPO FRONTEND (NEXT.JS 16)
+
+- [x] **Giai đoạn 1: Chuyển đổi kiến trúc Monorepo (backend/ & frontend/)** (Hoàn thành)
+  - [x] Tạo nhánh feature/monorepo-structure.
+  - [x] Di chuyển toàn bộ mã nguồn Backend vào backend/.
+  - [x] Cập nhật root docker-compose.yml và root .gitignore.
+  - [x] Kiểm tra npm run lint và npm run build backend thành công 100%.
+  - [x] Merge vào develop và main, push lên GitHub.
+
+- [x] **Giai đoạn 2: Khởi tạo Frontend Next.js 16 & Cấu hình Architecture** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-init-and-client.
+  - [x] Tích hợp mã nguồn Frontend Next.js 16 vào frontend/.
+  - [x] Thiết lập frontend/.env.example và frontend/.env.local trỏ về Backend local (http://localhost:3000/api).
+  - [x] Chạy npm install, kiểm tra npm run lint (0 lỗi, 0 cảnh báo) và npm run build (Turbopack compile 14 routes thành công).
+  - [x] Merge vào develop và push lên GitHub.
+
+- [x] **Giai đoạn 3: Authentication, Profile & Modal Flow (Frontend)** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-auth-and-profile.
+  - [x] Đồng bộ và kiểm thử luồng Đăng nhập (/auth/signin), Đăng ký (/auth/signup) qua AuthModal.
+  - [x] Kiểm tra quản lý Session qua localStorage & Cookies (token, userRole).
+  - [x] Đồng bộ trang thông tin cá nhân /profile (getUserById, updateUser).
+  - [x] Xác thực chức năng upload ảnh đại diện POST /users/upload-avatar (FormData formFile, kiểm tra dung lượng < 1MB).
+  - [x] Xác minh 100% npm run lint và npm run build.
+  - [x] Merge vào develop và push lên GitHub.
+
+- [x] **Giai đoạn 4: Location & Room Browsing, Filtering & Search (Frontend)** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-rooms-and-locations.
+  - [x] Đồng bộ danh sách vị trí nổi bật, tìm kiếm vị trí theo từ khóa.
+  - [x] Danh sách phòng, phân trang, lọc theo vị trí (maViTri), ngày nhận/trả phòng, số lượng khách.
+  - [x] Bộ lọc 10 tiện ích chuẩn: máy giặt, bàn là, tivi, điều hòa, wifi, bếp, đỗ xe, hồ bơi, bàn ủi.
+  - [x] Chi tiết phòng /rooms/[id], thư viện ảnh, thông tin vị trí và tiện ích.
+  - [x] Xác minh 100% npm run lint và npm run build.
+  - [x] Merge vào develop và push lên GitHub.
+
+- [x] **Giai đoạn 5: Booking Flow, Availability Check & Comments (Frontend)** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-booking-and-comments.
+  - [x] Thuật toán kiểm tra phòng trống và chống trùng lịch đặt phòng (overlap prevention).
+  - [x] Tạo đơn đặt phòng POST /dat-phong với tính toán giá tiền tự động theo số đêm.
+  - [x] Trang lịch sử chuyến đi của tôi (My Trips / Booking History) kèm hủy phòng DELETE /dat-phong/{id}.
+  - [x] Hệ thống bình luận và đánh giá sao (1-5 sao) theo phòng /binh-luan/lay-binh-luan-theo-phong/{MaPhong}.
+  - [x] Xác minh 100% npm run lint và npm run build.
+  - [x] Merge vào develop và push lên GitHub.
+
+- [x] **Giai đoạn 6: Admin Dashboard, Vitest Tests, Fullstack Docker & Bàn giao** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-admin-and-docker.
+  - [x] Admin Portal quản lý CRUD 4 module: Users, Rooms, Locations, Bookings.
+  - [x] Bổ sung bộ Unit Tests Vitest (49 test cases) bao phủ: API error mapping, Booking availability algorithm, Zod validation schemas.
+  - [x] Cập nhật docker-compose.yml chạy fullstack 3 container: mysql_db (3306), backend (3000), frontend (3001).
+  - [x] Cập nhật toàn diện README.md Monorepo và bàn giao nghiệm thu.
+  - [x] Merge vào develop và main, gắn tag version v2.0.0.

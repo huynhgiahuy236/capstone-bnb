@@ -15,6 +15,20 @@ services:
         condition: service_healthy
     restart: always
 
+  frontend:
+    container_name: capstone_airbnb_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3000/api
+      - NEXT_PUBLIC_TOKEN_CYBERSOFT=""
+    depends_on:
+      - backend
+    restart: always
+
   mysql_db:
     container_name: capstone_airbnb_mysql
     image: mysql:8.0
