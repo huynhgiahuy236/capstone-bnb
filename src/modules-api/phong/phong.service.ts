@@ -75,7 +75,7 @@ export class PhongService {
         where: { id: dto.maViTri, isDeleted: false },
       });
       if (!viTri) {
-        throw new NotFoundException(`Không tìm thấy vị trí có ID: ${dto.maViTri}`);
+        throw new NotFoundException(`Không tìm thấy vị trí có ID: ${dto.maViTri} trên hệ thống!`);
       }
     }
 
@@ -119,7 +119,7 @@ export class PhongService {
     });
 
     if (!phong) {
-      throw new NotFoundException(`Không tìm thấy phòng có ID: ${id}`);
+      throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${id} hoặc phòng đã bị xóa!`);
     }
 
     return this.formatPhong(phong);
@@ -129,6 +129,13 @@ export class PhongService {
    * 4. Lấy danh sách phòng theo mã vị trí
    */
   async findByViTri(maViTri: number) {
+    const viTri = await this.prisma.viTri.findFirst({
+      where: { id: maViTri, isDeleted: false },
+    });
+    if (!viTri) {
+      throw new NotFoundException(`Không tìm thấy vị trí có ID: ${maViTri} trên hệ thống!`);
+    }
+
     const list = await this.prisma.phong.findMany({
       where: {
         ma_vi_tri: maViTri,
@@ -152,7 +159,7 @@ export class PhongService {
         where: { id: dto.maViTri, isDeleted: false },
       });
       if (!viTri) {
-        throw new NotFoundException(`Không tìm thấy vị trí có ID: ${dto.maViTri}`);
+        throw new NotFoundException(`Không tìm thấy vị trí có ID: ${dto.maViTri} trên hệ thống!`);
       }
     }
 
@@ -202,7 +209,7 @@ export class PhongService {
     });
 
     return {
-      message: `Đã xóa thành công phòng có ID: ${id}`,
+      message: `Đã xóa thành công phòng thuê có ID: ${id}`,
       content: null,
     };
   }
@@ -271,4 +278,3 @@ export class PhongService {
     };
   }
 }
-

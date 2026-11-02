@@ -2,6 +2,8 @@ import {
   Injectable,
   ConflictException,
   UnauthorizedException,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -28,7 +30,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email này đã được đăng ký trong hệ thống!');
+      throw new ConflictException('Email này đã được đăng ký trong hệ thống, vui lòng chọn email khác!');
     }
 
     // 2. Hash mật khẩu bằng bcrypt
@@ -77,14 +79,18 @@ export class AuthService {
       },
     });
 
-    if (!user || !user.pass_word) {
-      throw new UnauthorizedException('Email hoặc mật khẩu không chính xác!');
+    if (!user) {
+      throw new NotFoundException('Tài khoản email này chưa được đăng ký trong hệ thống!');
+    }
+
+    if (!user.pass_word) {
+      throw new BadRequestException('Tài khoản này được đăng ký thông qua mạng xã hội, vui lòng đăng nhập bằng Google!');
     }
 
     // 2. So sánh mật khẩu băm
     const isPasswordValid = await bcrypt.compare(password, user.pass_word);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Email hoặc mật khẩu không chính xác!');
+      throw new UnauthorizedException('Mật khẩu không chính xác, vui lòng thử lại!');
     }
 
     // 3. Ký Access Token
@@ -108,4 +114,3 @@ export class AuthService {
     };
   }
 }
-

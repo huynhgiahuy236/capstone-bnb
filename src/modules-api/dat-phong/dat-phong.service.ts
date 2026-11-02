@@ -67,7 +67,7 @@ export class DatPhongService {
       where: { id: dto.maPhong, isDeleted: false },
     });
     if (!phong) {
-      throw new NotFoundException(`Không tìm thấy phòng có ID: ${dto.maPhong}`);
+      throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${dto.maPhong} hoặc phòng đã bị xóa!`);
     }
 
     // 2. Kiểm tra người dùng tồn tại
@@ -75,14 +75,14 @@ export class DatPhongService {
       where: { id: dto.maNguoiDung, isDeleted: false },
     });
     if (!nguoiDung) {
-      throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiDung}`);
+      throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiDung} hoặc người dùng đã bị xóa!`);
     }
 
     // 3. Kiểm tra ngày đến và ngày đi
     const checkIn = new Date(dto.ngayDen);
     const checkOut = new Date(dto.ngayDi);
     if (checkOut <= checkIn) {
-      throw new BadRequestException('Ngày đi (check-out) phải sau ngày đến (check-in)!');
+      throw new BadRequestException('Ngày đi (check-out) phải diễn ra sau ngày đến (check-in)!');
     }
 
     const newBooking = await this.prisma.datPhong.create({
@@ -118,7 +118,7 @@ export class DatPhongService {
     });
 
     if (!booking) {
-      throw new NotFoundException(`Không tìm thấy đơn đặt phòng có ID: ${id}`);
+      throw new NotFoundException(`Không tìm thấy đơn đặt phòng có ID: ${id} hoặc đơn đã bị hủy!`);
     }
 
     return this.formatDatPhong(booking);
@@ -135,7 +135,7 @@ export class DatPhongService {
         where: { id: dto.maPhong, isDeleted: false },
       });
       if (!phong) {
-        throw new NotFoundException(`Không tìm thấy phòng có ID: ${dto.maPhong}`);
+        throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${dto.maPhong} hoặc phòng đã bị xóa!`);
       }
     }
 
@@ -144,13 +144,13 @@ export class DatPhongService {
         where: { id: dto.maNguoiDung, isDeleted: false },
       });
       if (!user) {
-        throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiDung}`);
+        throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiDung} hoặc người dùng đã bị xóa!`);
       }
     }
 
     if (dto.ngayDen && dto.ngayDi) {
       if (new Date(dto.ngayDi) <= new Date(dto.ngayDen)) {
-        throw new BadRequestException('Ngày đi (check-out) phải sau ngày đến (check-in)!');
+        throw new BadRequestException('Ngày đi (check-out) phải diễn ra sau ngày đến (check-in)!');
       }
     }
 
@@ -199,6 +199,13 @@ export class DatPhongService {
    * 6. Lấy danh sách đặt phòng theo người dùng
    */
   async findByUser(maNguoiDung: number) {
+    const user = await this.prisma.nguoiDung.findFirst({
+      where: { id: maNguoiDung, isDeleted: false },
+    });
+    if (!user) {
+      throw new NotFoundException(`Không tìm thấy người dùng có ID: ${maNguoiDung} hoặc người dùng đã bị xóa!`);
+    }
+
     const list = await this.prisma.datPhong.findMany({
       where: {
         ma_nguoi_dat: maNguoiDung,
@@ -214,4 +221,3 @@ export class DatPhongService {
     return list.map((item) => this.formatDatPhong(item));
   }
 }
-

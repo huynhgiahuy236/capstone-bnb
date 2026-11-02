@@ -39,7 +39,8 @@ export class ViTriController {
   @Public()
   @Get()
   @ApiOperation({ summary: 'Lấy toàn bộ danh sách vị trí' })
-  @ApiResponse({ status: 200, description: 'Lấy danh sách thành công' })
+  @ApiResponse({ status: 200, description: 'Lấy toàn bộ danh sách vị trí thành công' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findAll() {
     return this.viTriService.findAll();
   }
@@ -50,7 +51,9 @@ export class ViTriController {
   @ApiQuery({ name: 'pageIndex', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10 })
   @ApiQuery({ name: 'keyword', required: false, type: String, example: '' })
-  @ApiResponse({ status: 200, description: 'Phân trang thành công' })
+  @ApiResponse({ status: 200, description: 'Phân trang tìm kiếm vị trí thành công' })
+  @ApiResponse({ status: 400, description: 'Tham số phân trang không hợp lệ' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   paginationSearch(@Query() query: PaginationViTriDto) {
     return this.viTriService.paginationSearch(query);
   }
@@ -59,8 +62,10 @@ export class ViTriController {
   @Get(':id')
   @ApiOperation({ summary: 'Lấy thông tin chi tiết một vị trí theo ID' })
   @ApiParam({ name: 'id', type: Number, example: 1 })
-  @ApiResponse({ status: 200, description: 'Lấy chi tiết thành công' })
-  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí' })
+  @ApiResponse({ status: 200, description: 'Lấy chi tiết vị trí thành công' })
+  @ApiResponse({ status: 400, description: 'ID vị trí không hợp lệ (phải là số nguyên)' })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có ID tương ứng hoặc đã bị xóa' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.viTriService.findOne(id);
   }
@@ -70,8 +75,11 @@ export class ViTriController {
   @ApiBearerAuth('Bearer')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Thêm vị trí mới (Yêu cầu ADMIN)' })
-  @ApiResponse({ status: 201, description: 'Tạo vị trí thành công' })
-  @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu ADMIN)' })
+  @ApiResponse({ status: 201, description: 'Tạo vị trí mới thành công' })
+  @ApiResponse({ status: 400, description: 'Dữ liệu vị trí gửi lên không hợp lệ' })
+  @ApiResponse({ status: 401, description: 'Chưa đăng nhập hoặc mã token không hợp lệ' })
+  @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu vai trò ADMIN)' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   create(@Body() createViTriDto: CreateViTriDto) {
     return this.viTriService.create(createViTriDto);
   }
@@ -81,8 +89,12 @@ export class ViTriController {
   @ApiBearerAuth('Bearer')
   @ApiOperation({ summary: 'Cập nhật thông tin vị trí (Yêu cầu ADMIN)' })
   @ApiParam({ name: 'id', type: Number, example: 1 })
-  @ApiResponse({ status: 200, description: 'Cập nhật thành công' })
-  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí' })
+  @ApiResponse({ status: 200, description: 'Cập nhật vị trí thành công' })
+  @ApiResponse({ status: 400, description: 'Dữ liệu cập nhật hoặc ID vị trí không hợp lệ' })
+  @ApiResponse({ status: 401, description: 'Chưa đăng nhập hoặc mã token không hợp lệ' })
+  @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu vai trò ADMIN)' })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có ID tương ứng để cập nhật' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateViTriDto: UpdateViTriDto,
@@ -95,8 +107,12 @@ export class ViTriController {
   @ApiBearerAuth('Bearer')
   @ApiOperation({ summary: 'Xóa vị trí theo ID (Yêu cầu ADMIN)' })
   @ApiParam({ name: 'id', type: Number, example: 1 })
-  @ApiResponse({ status: 200, description: 'Xóa thành công' })
-  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí' })
+  @ApiResponse({ status: 200, description: 'Xóa vị trí thành công' })
+  @ApiResponse({ status: 400, description: 'ID vị trí không hợp lệ' })
+  @ApiResponse({ status: 401, description: 'Chưa đăng nhập hoặc mã token không hợp lệ' })
+  @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu vai trò ADMIN)' })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có ID tương ứng để xóa' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.viTriService.remove(id);
   }
@@ -123,6 +139,11 @@ export class ViTriController {
     },
   })
   @ApiResponse({ status: 200, description: 'Upload hình vị trí thành công' })
+  @ApiResponse({ status: 400, description: 'Chưa chọn file hình ảnh hoặc file không đúng định dạng' })
+  @ApiResponse({ status: 401, description: 'Chưa đăng nhập hoặc mã token không hợp lệ' })
+  @ApiResponse({ status: 403, description: 'Không đủ quyền truy cập (Yêu cầu vai trò ADMIN)' })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy vị trí có mã tương ứng' })
+  @ApiResponse({ status: 500, description: 'Lỗi máy chủ nội bộ (Internal Server Error)' })
   uploadHinhViTri(
     @Query('maViTri', ParseIntPipe) maViTri: number,
     @UploadedFile() file: Express.Multer.File,
@@ -130,4 +151,3 @@ export class ViTriController {
     return this.viTriService.uploadHinhViTri(maViTri, file);
   }
 }
-

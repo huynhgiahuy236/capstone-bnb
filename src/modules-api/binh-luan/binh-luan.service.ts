@@ -64,7 +64,7 @@ export class BinhLuanService {
       where: { id: dto.maPhong, isDeleted: false },
     });
     if (!phong) {
-      throw new NotFoundException(`Không tìm thấy phòng có ID: ${dto.maPhong}`);
+      throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${dto.maPhong} hoặc phòng đã bị xóa!`);
     }
 
     // 2. Kiểm tra người dùng tồn tại
@@ -72,7 +72,7 @@ export class BinhLuanService {
       where: { id: dto.maNguoiBinhLuan, isDeleted: false },
     });
     if (!user) {
-      throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiBinhLuan}`);
+      throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiBinhLuan} hoặc người dùng đã bị xóa!`);
     }
 
     const newComment = await this.prisma.binhLuan.create({
@@ -108,7 +108,7 @@ export class BinhLuanService {
     });
 
     if (!comment) {
-      throw new NotFoundException(`Không tìm thấy bình luận có ID: ${id}`);
+      throw new NotFoundException(`Không tìm thấy bình luận có ID: ${id} hoặc bình luận đã bị xóa!`);
     }
 
     return this.formatBinhLuan(comment);
@@ -162,6 +162,13 @@ export class BinhLuanService {
    * 6. Lấy danh sách bình luận theo phòng
    */
   async findByPhong(maPhong: number) {
+    const phong = await this.prisma.phong.findFirst({
+      where: { id: maPhong, isDeleted: false },
+    });
+    if (!phong) {
+      throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${maPhong} trên hệ thống!`);
+    }
+
     const list = await this.prisma.binhLuan.findMany({
       where: {
         ma_phong: maPhong,
@@ -177,4 +184,3 @@ export class BinhLuanService {
     return list.map((item) => this.formatBinhLuan(item));
   }
 }
-
