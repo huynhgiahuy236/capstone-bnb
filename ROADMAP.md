@@ -187,9 +187,10 @@
   - [x] Xác minh 100% npm run lint và npm run build.
   - [x] Merge vào develop và push lên GitHub.
 
-- [ ] **Giai đoạn 6: Admin Dashboard, Vitest Tests, Fullstack Docker & Bàn giao**
-  - [ ] Tạo nhánh feature/frontend-admin-and-docker.
-  - [ ] Admin Portal quản lý CRUD 4 module: Users, Rooms, Locations, Bookings.
-  - [ ] Bổ sung bộ Unit Tests Vitest (49 test cases) bao phủ: API error mapping, Booking availability algorithm, Zod validation schemas.
-  - [ ] Cập nhật docker-compose.yml chạy fullstack 3 container: mysql_db (3306), backend (3000), frontend (3001).
-  - [ ] Cập nhật toàn diện README.md Monorepo và bàn giao nghiệm thu.
+- [x] **Giai đoạn 6: Admin Dashboard, Vitest Tests, Fullstack Docker & Bàn giao** (Hoàn thành)
+  - [x] Tạo nhánh feature/frontend-admin-and-docker.
+  - [x] Admin Portal quản lý CRUD 4 module: Users, Rooms, Locations, Bookings.
+  - [x] Bổ sung bộ Unit Tests Vitest (49 test cases) bao phủ: API error mapping, Booking availability algorithm, Zod validation schemas.
+  - [x] Cập nhật docker-compose.yml chạy fullstack 3 container: mysql_db (3306), backend (3000), frontend (3001).
+  - [x] Cập nhật toàn diện README.md Monorepo và bàn giao nghiệm thu.
+  - [x] Merge vào develop và main, gắn tag version v2.0.0.
