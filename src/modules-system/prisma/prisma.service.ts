@@ -3,8 +3,8 @@ import {
   OnModuleInit,
   OnModuleDestroy,
   Logger,
-} from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+} from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 
 @Injectable()
 export class PrismaService
@@ -16,15 +16,17 @@ export class PrismaService
   async onModuleInit() {
     try {
       await this.$connect();
-      this.logger.log('✅ [PRISMA] Kết nối cơ sở dữ liệu MySQL thành công!');
+      this.logger.log("✅ [PRISMA] Kết nối cơ sở dữ liệu MySQL thành công!");
     } catch (error: any) {
-      this.logger.error('❌ [PRISMA] Lỗi kết nối cơ sở dữ liệu MySQL:', error.message);
+      this.logger.error(
+        "❌ [PRISMA] Lỗi kết nối cơ sở dữ liệu MySQL:",
+        error.message,
+      );
     }
   }
 
   async onModuleDestroy() {
     await this.$disconnect();
-    this.logger.log('🔌 [PRISMA] Đã ngắt kết nối cơ sở dữ liệu.');
+    this.logger.log("🔌 [PRISMA] Đã ngắt kết nối cơ sở dữ liệu.");
   }
 }
-

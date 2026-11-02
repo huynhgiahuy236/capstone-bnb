@@ -3,13 +3,13 @@ import {
   NotFoundException,
   ConflictException,
   BadRequestException,
-} from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PaginationUserDto } from './dto/pagination-user.dto';
-import { UploadService } from 'src/common/services/upload.service';
+} from "@nestjs/common";
+import * as bcrypt from "bcrypt";
+import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { PaginationUserDto } from "./dto/pagination-user.dto";
+import { UploadService } from "src/common/services/upload.service";
 
 @Injectable()
 export class UsersService {
@@ -43,22 +43,28 @@ export class UsersService {
    * 2. Tạo người dùng mới (Dành cho Admin)
    */
   async create(createUserDto: CreateUserDto) {
-    const { email, password, name, phone, birthday, gender, role } = createUserDto;
+    const { email, password, name, phone, birthday, gender, role } =
+      createUserDto;
 
     const existingUser = await this.prisma.nguoiDung.findUnique({
       where: { email },
     });
 
     if (existingUser) {
-      throw new ConflictException('Email này đã được sử dụng!');
+      throw new ConflictException("Email này đã được sử dụng!");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    let formattedGender = 'Nam';
+    let formattedGender = "Nam";
     if (gender !== undefined && gender !== null) {
-      if (gender === false || gender === 'false' || gender === 'Nữ' || gender === 'Nu') {
-        formattedGender = 'Nữ';
+      if (
+        gender === false ||
+        gender === "false" ||
+        gender === "Nữ" ||
+        gender === "Nu"
+      ) {
+        formattedGender = "Nữ";
       }
     }
 
@@ -70,7 +76,7 @@ export class UsersService {
         phone: phone || null,
         birth_day: birthday || null,
         gender: formattedGender,
-        role: role?.toUpperCase() === 'ADMIN' ? 'ADMIN' : 'USER',
+        role: role?.toUpperCase() === "ADMIN" ? "ADMIN" : "USER",
       },
       select: {
         id: true,
@@ -86,7 +92,7 @@ export class UsersService {
     });
 
     return {
-      message: 'Tạo người dùng mới thành công!',
+      message: "Tạo người dùng mới thành công!",
       content: newUser,
     };
   }
@@ -134,16 +140,21 @@ export class UsersService {
         },
       });
       if (emailConflict) {
-        throw new ConflictException('Email này đã được sử dụng bởi tài khoản khác!');
+        throw new ConflictException(
+          "Email này đã được sử dụng bởi tài khoản khác!",
+        );
       }
     }
 
     let formattedGender: string | undefined = undefined;
     if (gender !== undefined && gender !== null) {
       formattedGender =
-        gender === false || gender === 'false' || gender === 'Nữ' || gender === 'Nu'
-          ? 'Nữ'
-          : 'Nam';
+        gender === false ||
+        gender === "false" ||
+        gender === "Nữ" ||
+        gender === "Nu"
+          ? "Nữ"
+          : "Nam";
     }
 
     const updatedUser = await this.prisma.nguoiDung.update({
@@ -154,7 +165,12 @@ export class UsersService {
         phone: phone !== undefined ? phone : undefined,
         birth_day: birthday !== undefined ? birthday : undefined,
         gender: formattedGender,
-        role: role !== undefined ? (role.toUpperCase() === 'ADMIN' ? 'ADMIN' : 'USER') : undefined,
+        role:
+          role !== undefined
+            ? role.toUpperCase() === "ADMIN"
+              ? "ADMIN"
+              : "USER"
+            : undefined,
       },
       select: {
         id: true,
@@ -170,7 +186,7 @@ export class UsersService {
     });
 
     return {
-      message: 'Cập nhật thông tin người dùng thành công!',
+      message: "Cập nhật thông tin người dùng thành công!",
       content: updatedUser,
     };
   }
@@ -225,7 +241,7 @@ export class UsersService {
   async paginationSearch(query: PaginationUserDto) {
     const pageIndex = Number(query.pageIndex) || 1;
     const pageSize = Number(query.pageSize) || 10;
-    const keyword = query.keyword ? String(query.keyword).trim() : '';
+    const keyword = query.keyword ? String(query.keyword).trim() : "";
 
     const skip = (pageIndex - 1) * pageSize;
 
@@ -245,7 +261,7 @@ export class UsersService {
         where: whereCondition,
         skip,
         take: pageSize,
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
         select: {
           id: true,
           name: true,
@@ -273,12 +289,12 @@ export class UsersService {
    */
   async uploadAvatar(userId: number, file: Express.Multer.File) {
     if (!file) {
-      throw new BadRequestException('Vui lòng chọn file hình ảnh đại diện!');
+      throw new BadRequestException("Vui lòng chọn file hình ảnh đại diện!");
     }
 
     await this.findOne(userId);
 
-    const avatarUrl = await this.uploadService.uploadImage(file, 'avatars');
+    const avatarUrl = await this.uploadService.uploadImage(file, "avatars");
 
     const updatedUser = await this.prisma.nguoiDung.update({
       where: { id: userId },
@@ -292,9 +308,8 @@ export class UsersService {
     });
 
     return {
-      message: 'Upload avatar thành công!',
+      message: "Upload avatar thành công!",
       content: updatedUser,
     };
   }
 }
-

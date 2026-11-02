@@ -2,12 +2,12 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-} from '@nestjs/common';
-import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreateLocationDto } from './dto/create-location.dto';
-import { UpdateLocationDto } from './dto/update-location.dto';
-import { PaginationLocationDto } from './dto/pagination-location.dto';
-import { UploadService } from 'src/common/services/upload.service';
+} from "@nestjs/common";
+import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { CreateLocationDto } from "./dto/create-location.dto";
+import { UpdateLocationDto } from "./dto/update-location.dto";
+import { PaginationLocationDto } from "./dto/pagination-location.dto";
+import { UploadService } from "src/common/services/upload.service";
 
 @Injectable()
 export class LocationService {
@@ -38,7 +38,7 @@ export class LocationService {
   async findAll() {
     const list = await this.prisma.viTri.findMany({
       where: { isDeleted: false },
-      orderBy: { id: 'desc' },
+      orderBy: { id: "desc" },
     });
     return list.map((item) => this.formatLocation(item));
   }
@@ -51,13 +51,13 @@ export class LocationService {
       data: {
         ten_vi_tri: dto.tenViTri,
         tinh_thanh: dto.tinhThanh,
-        quoc_gia: dto.quocGia || 'Việt Nam',
+        quoc_gia: dto.quocGia || "Việt Nam",
         hinh_anh: dto.hinhAnh || null,
       },
     });
 
     return {
-      message: 'Thêm vị trí mới thành công!',
+      message: "Thêm vị trí mới thành công!",
       content: this.formatLocation(newLocation),
     };
   }
@@ -71,7 +71,9 @@ export class LocationService {
     });
 
     if (!location) {
-      throw new NotFoundException(`Không tìm thấy vị trí có ID: ${id} hoặc vị trí đã bị xóa!`);
+      throw new NotFoundException(
+        `Không tìm thấy vị trí có ID: ${id} hoặc vị trí đã bị xóa!`,
+      );
     }
 
     return this.formatLocation(location);
@@ -94,7 +96,7 @@ export class LocationService {
     });
 
     return {
-      message: 'Cập nhật vị trí thành công!',
+      message: "Cập nhật vị trí thành công!",
       content: this.formatLocation(updated),
     };
   }
@@ -125,7 +127,7 @@ export class LocationService {
   async paginationSearch(query: PaginationLocationDto) {
     const pageIndex = Number(query.pageIndex) || 1;
     const pageSize = Number(query.pageSize) || 10;
-    const keyword = query.keyword ? String(query.keyword).trim() : '';
+    const keyword = query.keyword ? String(query.keyword).trim() : "";
 
     const skip = (pageIndex - 1) * pageSize;
 
@@ -146,7 +148,7 @@ export class LocationService {
         where: whereCondition,
         skip,
         take: pageSize,
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
       }),
     ]);
 
@@ -164,12 +166,12 @@ export class LocationService {
    */
   async uploadLocationImage(maViTri: number, file: Express.Multer.File) {
     if (!file) {
-      throw new BadRequestException('Vui lòng chọn file hình ảnh!');
+      throw new BadRequestException("Vui lòng chọn file hình ảnh!");
     }
 
     await this.findOne(maViTri);
 
-    const imageUrl = await this.uploadService.uploadImage(file, 'locations');
+    const imageUrl = await this.uploadService.uploadImage(file, "locations");
 
     const updated = await this.prisma.viTri.update({
       where: { id: maViTri },
@@ -177,7 +179,7 @@ export class LocationService {
     });
 
     return {
-      message: 'Upload hình ảnh vị trí thành công!',
+      message: "Upload hình ảnh vị trí thành công!",
       content: this.formatLocation(updated),
     };
   }

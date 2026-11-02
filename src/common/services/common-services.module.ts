@@ -1,5 +1,5 @@
-import { Global, Module } from '@nestjs/common';
-import { UploadService } from './upload.service';
+import { Global, Module } from "@nestjs/common";
+import { UploadService } from "./upload.service";
 
 @Global()
 @Module({
@@ -7,4 +7,3 @@ import { UploadService } from './upload.service';
   exports: [UploadService],
 })
 export class CommonServicesModule {}
-

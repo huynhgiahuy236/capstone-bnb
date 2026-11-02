@@ -3,11 +3,10 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  HttpStatus,
   Logger,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { statusCodes } from '../constants/status-code.constant';
+} from "@nestjs/common";
+import { Response } from "express";
+import { statusCodes } from "../constants/status-code.constant";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -18,33 +17,35 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     let statusCode: number = statusCodes.INTERNAL_SERVER_ERROR;
-    let message = 'Lỗi máy chủ nội bộ (Internal Server Error)';
+    let message = "Internal Server Error";
     let content: any = null;
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
       const res = exception.getResponse();
 
-      if (typeof res === 'string') {
+      if (typeof res === "string") {
         message = res;
-      } else if (typeof res === 'object' && res !== null) {
+      } else if (typeof res === "object" && res !== null) {
         const errorObj = res as Record<string, any>;
-        message = errorObj.error || errorObj.message || message;
-        // Nếu là lỗi validation từ ValidationPipe (mảng message)
         if (Array.isArray(errorObj.message)) {
+          message = "Dữ liệu đầu vào không hợp lệ!";
           content = errorObj.message;
-          message = 'Dữ liệu đầu vào không hợp lệ';
-        } else if (errorObj.message) {
-          message = errorObj.message;
+        } else {
+          message = errorObj.message || errorObj.error || message;
+          content = errorObj.content !== undefined ? errorObj.content : null;
         }
       }
     } else if (exception instanceof Error) {
-      this.logger.error(`Unhandled Exception: ${exception.message}`, exception.stack);
-      message = exception.message;
+      this.logger.error(
+        `Unhandled Exception: ${exception.message}`,
+        exception.stack,
+      );
+      message = exception.message || "Lỗi hệ thống máy chủ";
     }
 
     response.status(statusCode).json({
-      status: 'error',
+      status: "error",
       statusCode,
       message,
       content,

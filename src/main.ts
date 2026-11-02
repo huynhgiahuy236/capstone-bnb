@@ -1,13 +1,13 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import cookieParser from 'cookie-parser';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { ValidationPipe } from "@nestjs/common";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import cookieParser from "cookie-parser";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { join } from "path";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,12 +22,12 @@ async function bootstrap() {
   });
 
   // Serve static files (public/images)
-  app.useStaticAssets(join(process.cwd(), 'public'), {
-    prefix: '/public/',
+  app.useStaticAssets(join(process.cwd(), "public"), {
+    prefix: "/public/",
   });
 
   // Global Prefix
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix("api");
 
   // Global Validation Pipe
   app.useGlobalPipes(
@@ -40,33 +40,35 @@ async function bootstrap() {
 
   // Setup Swagger UI
   const config = new DocumentBuilder()
-    .setTitle('Airbnb API - CyberSoft Capstone')
-    .setDescription('Tài liệu đặc tả API dự án cuối khóa Airbnb chuẩn CyberSoft')
-    .setVersion('1.0.0')
+    .setTitle("Airbnb API - CyberSoft Capstone")
+    .setDescription(
+      "Tài liệu đặc tả API dự án cuối khóa Airbnb chuẩn CyberSoft",
+    )
+    .setVersion("1.0.0")
     .addBearerAuth(
       {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'Authorization',
-        description: 'Nhập Bearer Token',
-        in: 'header',
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+        name: "Authorization",
+        description: "Nhập Bearer Token",
+        in: "header",
       },
-      'Bearer',
+      "Bearer",
     )
     .addApiKey(
       {
-        type: 'apiKey',
-        name: 'token',
-        in: 'header',
-        description: 'Nhập token qua header token',
+        type: "apiKey",
+        name: "token",
+        in: "header",
+        description: "Nhập token qua header token",
       },
-      'token',
+      "token",
     )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document, {
+  SwaggerModule.setup("api/docs", app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
@@ -79,4 +81,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-

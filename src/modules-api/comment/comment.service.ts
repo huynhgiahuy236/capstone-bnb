@@ -1,10 +1,7 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { CreateCommentDto } from "./dto/create-comment.dto";
+import { UpdateCommentDto } from "./dto/update-comment.dto";
 
 @Injectable()
 export class CommentService {
@@ -50,7 +47,7 @@ export class CommentService {
         NguoiDung: true,
         Phong: true,
       },
-      orderBy: { id: 'desc' },
+      orderBy: { id: "desc" },
     });
     return list.map((item) => this.formatComment(item));
   }
@@ -64,7 +61,9 @@ export class CommentService {
       where: { id: dto.maPhong, isDeleted: false },
     });
     if (!phong) {
-      throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${dto.maPhong} hoặc phòng đã bị xóa!`);
+      throw new NotFoundException(
+        `Không tìm thấy phòng thuê có ID: ${dto.maPhong} hoặc phòng đã bị xóa!`,
+      );
     }
 
     // 2. Kiểm tra người dùng tồn tại
@@ -72,7 +71,9 @@ export class CommentService {
       where: { id: dto.maNguoiBinhLuan, isDeleted: false },
     });
     if (!user) {
-      throw new NotFoundException(`Không tìm thấy người dùng có ID: ${dto.maNguoiBinhLuan} hoặc người dùng đã bị xóa!`);
+      throw new NotFoundException(
+        `Không tìm thấy người dùng có ID: ${dto.maNguoiBinhLuan} hoặc người dùng đã bị xóa!`,
+      );
     }
 
     const newComment = await this.prisma.binhLuan.create({
@@ -81,7 +82,9 @@ export class CommentService {
         ma_nguoi_binh_luan: dto.maNguoiBinhLuan,
         noi_dung: dto.noiDung,
         sao_binh_luan: dto.saoBinhLuan,
-        ngay_binh_luan: dto.ngayBinhLuan ? new Date(dto.ngayBinhLuan) : new Date(),
+        ngay_binh_luan: dto.ngayBinhLuan
+          ? new Date(dto.ngayBinhLuan)
+          : new Date(),
       },
       include: {
         NguoiDung: true,
@@ -90,7 +93,7 @@ export class CommentService {
     });
 
     return {
-      message: 'Thêm bình luận thành công!',
+      message: "Thêm bình luận thành công!",
       content: this.formatComment(newComment),
     };
   }
@@ -108,7 +111,9 @@ export class CommentService {
     });
 
     if (!comment) {
-      throw new NotFoundException(`Không tìm thấy bình luận có ID: ${id} hoặc bình luận đã bị xóa!`);
+      throw new NotFoundException(
+        `Không tìm thấy bình luận có ID: ${id} hoặc bình luận đã bị xóa!`,
+      );
     }
 
     return this.formatComment(comment);
@@ -124,7 +129,8 @@ export class CommentService {
       where: { id },
       data: {
         noi_dung: dto.noiDung !== undefined ? dto.noiDung : undefined,
-        sao_binh_luan: dto.saoBinhLuan !== undefined ? dto.saoBinhLuan : undefined,
+        sao_binh_luan:
+          dto.saoBinhLuan !== undefined ? dto.saoBinhLuan : undefined,
       },
       include: {
         NguoiDung: true,
@@ -133,7 +139,7 @@ export class CommentService {
     });
 
     return {
-      message: 'Cập nhật bình luận thành công!',
+      message: "Cập nhật bình luận thành công!",
       content: this.formatComment(updated),
     };
   }
@@ -166,7 +172,9 @@ export class CommentService {
       where: { id: maPhong, isDeleted: false },
     });
     if (!phong) {
-      throw new NotFoundException(`Không tìm thấy phòng thuê có ID: ${maPhong} trên hệ thống!`);
+      throw new NotFoundException(
+        `Không tìm thấy phòng thuê có ID: ${maPhong} trên hệ thống!`,
+      );
     }
 
     const list = await this.prisma.binhLuan.findMany({
@@ -178,7 +186,7 @@ export class CommentService {
         NguoiDung: true,
         Phong: true,
       },
-      orderBy: { id: 'desc' },
+      orderBy: { id: "desc" },
     });
 
     return list.map((item) => this.formatComment(item));

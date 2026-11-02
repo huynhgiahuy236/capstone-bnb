@@ -3,9 +3,9 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from '../decorators/roles.decorator';
+} from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { ROLES_KEY } from "../decorators/roles.decorator";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -24,7 +24,9 @@ export class RolesGuard implements CanActivate {
     const { user } = context.switchToHttp().getRequest();
 
     if (!user || !user.role) {
-      throw new ForbiddenException('Không tìm thấy thông tin quyền hạn người dùng');
+      throw new ForbiddenException(
+        "Không tìm thấy thông tin quyền hạn người dùng",
+      );
     }
 
     const hasRole = requiredRoles.some(
@@ -33,11 +35,10 @@ export class RolesGuard implements CanActivate {
 
     if (!hasRole) {
       throw new ForbiddenException(
-        `Người dùng không có quyền truy cập! (Yêu cầu vai trò: ${requiredRoles.join(', ')})`,
+        `Người dùng không có quyền truy cập! (Yêu cầu vai trò: ${requiredRoles.join(", ")})`,
       );
     }
 
     return true;
   }
 }
-

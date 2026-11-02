@@ -71,4 +71,3 @@ export const statusCodes = {
 } as const;
 
 export type StatusCode = (typeof statusCodes)[keyof typeof statusCodes];
-

@@ -3,13 +3,13 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { statusCodes } from '../constants/status-code.constant';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { statusCodes } from "../constants/status-code.constant";
 
 export interface StandardResponse<T> {
-  status: 'success' | 'error';
+  status: "success" | "error";
   statusCode: number;
   message: string;
   content: T;
@@ -17,9 +17,10 @@ export interface StandardResponse<T> {
 }
 
 @Injectable()
-export class ResponseTransformInterceptor<T>
-  implements NestInterceptor<T, StandardResponse<T>>
-{
+export class ResponseTransformInterceptor<T> implements NestInterceptor<
+  T,
+  StandardResponse<T>
+> {
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -29,28 +30,28 @@ export class ResponseTransformInterceptor<T>
 
     return next.handle().pipe(
       map((result) => {
-        let message = 'Xử lý thành công';
+        let message = "Xử lý thành công";
         let content: any = result;
 
         // Nếu service trả về object có custom message hoặc data/content riêng biệt
         if (
           result &&
-          typeof result === 'object' &&
+          typeof result === "object" &&
           !Array.isArray(result) &&
-          ('message' in result || 'content' in result || 'data' in result)
+          ("message" in result || "content" in result || "data" in result)
         ) {
           if (result.message) {
             message = result.message;
           }
-          if ('content' in result) {
+          if ("content" in result) {
             content = result.content;
-          } else if ('data' in result) {
+          } else if ("data" in result) {
             content = result.data;
           }
         }
 
         return {
-          status: 'success',
+          status: "success",
           statusCode,
           message,
           content: content ?? null,
@@ -60,4 +61,3 @@ export class ResponseTransformInterceptor<T>
     );
   }
 }
-

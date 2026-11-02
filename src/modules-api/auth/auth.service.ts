@@ -4,12 +4,12 @@ import {
   UnauthorizedException,
   NotFoundException,
   BadRequestException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'src/modules-system/prisma/prisma.service';
-import { SignupDto } from './dto/signup.dto';
-import { SigninDto } from './dto/signin.dto';
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
+import { PrismaService } from "src/modules-system/prisma/prisma.service";
+import { SignupDto } from "./dto/signup.dto";
+import { SigninDto } from "./dto/signin.dto";
 
 @Injectable()
 export class AuthService {
@@ -30,17 +30,24 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email này đã được đăng ký trong hệ thống, vui lòng chọn email khác!');
+      throw new ConflictException(
+        "Email này đã được đăng ký trong hệ thống, vui lòng chọn email khác!",
+      );
     }
 
     // 2. Hash mật khẩu bằng bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Chuẩn hóa giới tính
-    let formattedGender = 'Nam';
+    let formattedGender = "Nam";
     if (gender !== undefined && gender !== null) {
-      if (gender === false || gender === 'false' || gender === 'Nữ' || gender === 'Nu') {
-        formattedGender = 'Nữ';
+      if (
+        gender === false ||
+        gender === "false" ||
+        gender === "Nữ" ||
+        gender === "Nu"
+      ) {
+        formattedGender = "Nữ";
       }
     }
 
@@ -53,14 +60,14 @@ export class AuthService {
         phone: phone || null,
         birth_day: birthday || null,
         gender: formattedGender,
-        role: role?.toUpperCase() === 'ADMIN' ? 'ADMIN' : 'USER',
+        role: role?.toUpperCase() === "ADMIN" ? "ADMIN" : "USER",
       },
     });
 
     // 5. Loại bỏ mật khẩu khi trả kết quả
-    const { pass_word, ...userWithoutPassword } = newUser;
+    const { pass_word: _pass_word, ...userWithoutPassword } = newUser;
     return {
-      message: 'Đăng ký tài khoản thành công!',
+      message: "Đăng ký tài khoản thành công!",
       content: userWithoutPassword,
     };
   }
@@ -80,17 +87,23 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('Tài khoản email này chưa được đăng ký trong hệ thống!');
+      throw new NotFoundException(
+        "Tài khoản email này chưa được đăng ký trong hệ thống!",
+      );
     }
 
     if (!user.pass_word) {
-      throw new BadRequestException('Tài khoản này được đăng ký thông qua mạng xã hội, vui lòng đăng nhập bằng Google!');
+      throw new BadRequestException(
+        "Tài khoản này được đăng ký thông qua mạng xã hội, vui lòng đăng nhập bằng Google!",
+      );
     }
 
     // 2. So sánh mật khẩu băm
     const isPasswordValid = await bcrypt.compare(password, user.pass_word);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Mật khẩu không chính xác, vui lòng thử lại!');
+      throw new UnauthorizedException(
+        "Mật khẩu không chính xác, vui lòng thử lại!",
+      );
     }
 
     // 3. Ký Access Token
@@ -104,9 +117,9 @@ export class AuthService {
     const token = await this.jwtService.signAsync(payload);
 
     // 4. Trả về token và thông tin người dùng
-    const { pass_word, ...userWithoutPassword } = user;
+    const { pass_word: _pass_word, ...userWithoutPassword } = user;
     return {
-      message: 'Đăng nhập thành công!',
+      message: "Đăng nhập thành công!",
       content: {
         user: userWithoutPassword,
         token,
