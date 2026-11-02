@@ -6,10 +6,24 @@ type StoredSession = {
   };
 };
   
+export const isValidHttpUrl = (val?: string | null): boolean => {
+  if (!val || typeof val !== "string") return false;
+  try {
+    const url = new URL(val);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 const getBaseUrl = (): string => {
-  let envUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    "https://capstone-backend-airbnb.vercel.app/api";
+  const fallback = "https://capstone-backend-airbnb.vercel.app/api";
+  let envUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+
+  // Tự động fallback nếu envUrl rỗng, không hợp lệ (như ký tự ẩn ••••••, text rác) hoặc không phải HTTP(S)
+  if (!envUrl || !isValidHttpUrl(envUrl)) {
+    return fallback;
+  }
 
   // Tự động chuyển hướng sang Backend Vercel nếu chạy trên Vercel mà env vô tình trỏ về localhost
   const isVercelServer = Boolean(process.env.VERCEL);
@@ -18,10 +32,10 @@ const getBaseUrl = (): string => {
     !window.location.hostname.includes("localhost");
 
   if ((isVercelServer || isVercelBrowser) && envUrl.includes("localhost")) {
-    envUrl = "https://capstone-backend-airbnb.vercel.app/api";
+    return fallback;
   }
 
-  const trimmed = envUrl.trim().replace(/\/+$/, "");
+  const trimmed = envUrl.replace(/\/+$/, "");
   return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
 };
 

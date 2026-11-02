@@ -33,9 +33,22 @@ export const getOptionalImageSource = (value?: string | null) => {
     return source;
   }
 
-  let apiUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    "https://capstone-backend-airbnb.vercel.app/api";
+  const fallbackApiUrl = "https://capstone-backend-airbnb.vercel.app/api";
+  let apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+
+  const isHttpUrl = (val?: string | null): boolean => {
+    if (!val || typeof val !== "string") return false;
+    try {
+      const parsed = new URL(val);
+      return parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch {
+      return false;
+    }
+  };
+
+  if (!apiUrl || !isHttpUrl(apiUrl)) {
+    apiUrl = fallbackApiUrl;
+  }
 
   const isVercelServer = Boolean(process.env.VERCEL);
   const isVercelBrowser =
@@ -43,7 +56,7 @@ export const getOptionalImageSource = (value?: string | null) => {
     !window.location.hostname.includes("localhost");
 
   if ((isVercelServer || isVercelBrowser) && apiUrl.includes("localhost")) {
-    apiUrl = "https://capstone-backend-airbnb.vercel.app/api";
+    apiUrl = fallbackApiUrl;
   }
 
   const cleanApiUrl = apiUrl.replace(/\/api\/?$/, "");

@@ -12,6 +12,7 @@ export async function GET() {
       envBaseUrl: process.env.NEXT_PUBLIC_API_URL,
       locationsCount: Array.isArray(loc?.content) ? loc.content.length : 0,
       roomsCount: Array.isArray(rooms?.content) ? rooms.content.length : 0,
+      firstRoom: Array.isArray(rooms?.content) ? rooms.content[0]?.tenPhong : null,
     });
   } catch (err: unknown) {
     const error = err as {
