@@ -25,3 +25,4 @@ Thư mục này chứa đầy đủ tài liệu API Postman phục vụ nộp b�
 ## 3. Tính năng tự động lưu Token (Auto JWT Token)
 - Khi bạn gọi API `POST /auth/signin` (Đăng nhập), test script sẽ tự động trích xuất JWT Token và lưu vào biến `{{token}}`.
 - Tất cả các API yêu cầu xác thực tiếp theo sẽ tự động gắn header `Authorization: Bearer {{token}}` mà không cần bạn copy thủ công.
+
