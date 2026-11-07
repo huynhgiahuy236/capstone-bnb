@@ -48,6 +48,27 @@
         },
         {
           "name": "POST Đăng nhập (Signin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "try {",
+                  "    const responseData = pm.response.json();",
+                  "    const token = responseData?.content?.token || responseData?.content;",
+                  "    if (token && typeof token === 'string') {",
+                  "        pm.collectionVariables.set('token', token);",
+                  "        pm.environment.set('token', token);",
+                  "        console.log('JWT Token auto-saved successfully!');",
+                  "    }",
+                  "} catch (e) {",
+                  "    console.error('Failed to parse token from response:', e);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
