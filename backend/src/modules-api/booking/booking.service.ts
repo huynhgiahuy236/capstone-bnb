@@ -82,12 +82,55 @@ export class BookingService {
       );
     }
 
-    // 3. Kiểm tra ngày đến và ngày đi
+    // 3. Kiểm tra số lượng khách với sức chứa phòng
+    const guestCount = dto.soLuongKhach || 1;
+    if (guestCount < 1) {
+      throw new BadRequestException("Số lượng khách tối thiểu là 1!");
+    }
+    if (phong.khach && guestCount > phong.khach) {
+      throw new BadRequestException(
+        `Số lượng khách (${guestCount}) vượt quá sức chứa tối đa của phòng (${phong.khach} khách)!`,
+      );
+    }
+
+    // 4. Kiểm tra tính hợp lệ của ngày đến và ngày đi
     const checkIn = new Date(dto.ngayDen);
     const checkOut = new Date(dto.ngayDi);
+    if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+      throw new BadRequestException(
+        "Định dạng ngày đến hoặc ngày đi không hợp lệ!",
+      );
+    }
     if (checkOut <= checkIn) {
       throw new BadRequestException(
-        "Ngày đi (check-out) phải diễn ra sau ngày đến (check-in)!",
+        "Ngày đi (check-out) phải diễn ra sau ngày đến (check-in) ít nhất 1 đêm!",
+      );
+    }
+
+    // 5. Kiểm tra ngày nhận không nằm trong quá khứ (theo giờ VN GMT+7)
+    const vnNow = new Date(Date.now() + 7 * 60 * 60 * 1000);
+    const vnTodayString = vnNow.toISOString().slice(0, 10);
+    const checkInVn = new Date(checkIn.getTime() + 7 * 60 * 60 * 1000);
+    const checkInVnString = checkInVn.toISOString().slice(0, 10);
+
+    if (checkInVnString < vnTodayString) {
+      throw new BadRequestException(
+        "Ngày nhận phòng (check-in) không thể nằm trong quá khứ!",
+      );
+    }
+
+    // 6. Kiểm tra xung đột trùng lịch phòng (Airbnb standard overlap)
+    const conflictingBooking = await this.prisma.datPhong.findFirst({
+      where: {
+        ma_phong: dto.maPhong,
+        isDeleted: false,
+        ngay_den: { lt: checkOut },
+        ngay_di: { gt: checkIn },
+      },
+    });
+    if (conflictingBooking) {
+      throw new BadRequestException(
+        "Phòng đã có khách đặt trong khoảng thời gian này. Vui lòng chọn khoảng ngày khác!",
       );
     }
 
@@ -96,7 +139,7 @@ export class BookingService {
         ma_phong: dto.maPhong,
         ngay_den: checkIn,
         ngay_di: checkOut,
-        so_luong_khach: dto.soLuongKhach || 1,
+        so_luong_khach: guestCount,
         ma_nguoi_dat: dto.maNguoiDung,
       },
       include: {
@@ -136,17 +179,30 @@ export class BookingService {
    * 4. Cập nhật thông tin đặt phòng
    */
   async update(id: number, dto: UpdateBookingDto) {
-    await this.findOne(id);
+    const existing = await this.prisma.datPhong.findFirst({
+      where: { id, isDeleted: false },
+      include: { Phong: true },
+    });
+    if (!existing) {
+      throw new NotFoundException(
+        `Không tìm thấy đơn đặt phòng có ID: ${id} hoặc đơn đã bị hủy!`,
+      );
+    }
 
-    if (dto.maPhong) {
-      const phong = await this.prisma.phong.findFirst({
+    const targetRoomId =
+      dto.maPhong !== undefined ? dto.maPhong : existing.ma_phong;
+    let targetRoom = existing.Phong;
+
+    if (dto.maPhong && dto.maPhong !== existing.ma_phong) {
+      const room = await this.prisma.phong.findFirst({
         where: { id: dto.maPhong, isDeleted: false },
       });
-      if (!phong) {
+      if (!room) {
         throw new NotFoundException(
           `Không tìm thấy phòng thuê có ID: ${dto.maPhong} hoặc phòng đã bị xóa!`,
         );
       }
+      targetRoom = room;
     }
 
     if (dto.maNguoiDung) {
@@ -160,20 +216,55 @@ export class BookingService {
       }
     }
 
-    if (dto.ngayDen && dto.ngayDi) {
-      if (new Date(dto.ngayDi) <= new Date(dto.ngayDen)) {
-        throw new BadRequestException(
-          "Ngày đi (check-out) phải diễn ra sau ngày đến (check-in)!",
-        );
-      }
+    const checkIn = dto.ngayDen ? new Date(dto.ngayDen) : existing.ngay_den;
+    const checkOut = dto.ngayDi ? new Date(dto.ngayDi) : existing.ngay_di;
+
+    if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+      throw new BadRequestException(
+        "Định dạng ngày đến hoặc ngày đi không hợp lệ!",
+      );
+    }
+    if (checkOut <= checkIn) {
+      throw new BadRequestException(
+        "Ngày đi (check-out) phải diễn ra sau ngày đến (check-in) ít nhất 1 đêm!",
+      );
+    }
+
+    const guestCount =
+      dto.soLuongKhach !== undefined
+        ? dto.soLuongKhach
+        : existing.so_luong_khach;
+    if (guestCount < 1) {
+      throw new BadRequestException("Số lượng khách tối thiểu là 1!");
+    }
+    if (targetRoom && targetRoom.khach && guestCount > targetRoom.khach) {
+      throw new BadRequestException(
+        `Số lượng khách (${guestCount}) vượt quá sức chứa tối đa của phòng (${targetRoom.khach} khách)!`,
+      );
+    }
+
+    // Kiểm tra trùng lịch (loại trừ chính đơn đặt phòng đang cập nhật)
+    const conflictingBooking = await this.prisma.datPhong.findFirst({
+      where: {
+        id: { not: id },
+        ma_phong: targetRoomId,
+        isDeleted: false,
+        ngay_den: { lt: checkOut },
+        ngay_di: { gt: checkIn },
+      },
+    });
+    if (conflictingBooking) {
+      throw new BadRequestException(
+        "Phòng đã có khách đặt trong khoảng thời gian này. Vui lòng chọn khoảng ngày khác!",
+      );
     }
 
     const updated = await this.prisma.datPhong.update({
       where: { id },
       data: {
         ma_phong: dto.maPhong !== undefined ? dto.maPhong : undefined,
-        ngay_den: dto.ngayDen ? new Date(dto.ngayDen) : undefined,
-        ngay_di: dto.ngayDi ? new Date(dto.ngayDi) : undefined,
+        ngay_den: dto.ngayDen ? checkIn : undefined,
+        ngay_di: dto.ngayDi ? checkOut : undefined,
         so_luong_khach:
           dto.soLuongKhach !== undefined ? dto.soLuongKhach : undefined,
         ma_nguoi_dat:
